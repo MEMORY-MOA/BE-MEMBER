@@ -34,22 +34,26 @@ public class MemberController {
                 .build();
         return responseDto;
     }
-	// 이메일 전송
-	@PostMapping("/email")
-	public ResponseEntity<Void> authEmail(@RequestBody @Valid EmailRequestDto request) throws Exception {
+	// 인증 이메일 전송
+	@PostMapping("/send-email")
+	public ResponseEntity<ResponseDto<?>> authEmail(@RequestBody @Valid EmailRequestDto request) throws Exception {
+		System.out.println(request);
 		memberService.sendAuthEmail(request);
-		return ResponseEntity.ok().build();
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.code(200)
+			.msg("Email sent successfully")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
-	// 인증코드 확인
-	@GetMapping("/verify")
-	public ResponseEntity getVerify(@RequestBody @Valid VerificationRequestDto request) throws NotFoundException {
-		try {
-			memberService.verifyEmail(request);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch (IllegalArgumentException e) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
+	// 인증 코드 확인
+	@GetMapping("/verify-code")
+	public ResponseEntity<ResponseDto<?>> getVerify(@RequestBody @Valid VerificationRequestDto request) throws NotFoundException{
+		memberService.verifyEmail(request);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.code(200)
+			.msg("Email verification successful")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
 }
