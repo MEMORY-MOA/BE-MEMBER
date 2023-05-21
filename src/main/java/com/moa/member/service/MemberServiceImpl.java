@@ -93,4 +93,16 @@ public class MemberServiceImpl implements MemberService {
 		redisUtil.setDataExpire(email, ePw, 60 * 5L);
 	}
 
+	@Override
+	public void verifyEmail(VerificationRequestDto request){
+		String email = request.getEmail();
+		String verificationCode = request.getVerificationCode();
+
+		String storedVerificationCode = redisUtil.getData(email);
+		if(storedVerificationCode==null || !verificationCode.equals(storedVerificationCode)) throw new NotFoundException(404, "유효하지 않은 코드입니다.");
+
+
+		redisUtil.deleteData(verificationCode);
+	}
+
 }

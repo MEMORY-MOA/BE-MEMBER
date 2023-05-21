@@ -40,5 +40,16 @@ public class MemberController {
 		memberService.sendAuthEmail(request);
 		return ResponseEntity.ok().build();
 	}
+	// 인증코드 확인
+	@GetMapping("/verify")
+	public ResponseEntity getVerify(@RequestBody @Valid VerificationRequestDto request) throws NotFoundException {
+		try {
+			memberService.verifyEmail(request);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+	}
 
 }
