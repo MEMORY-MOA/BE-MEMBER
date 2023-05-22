@@ -102,9 +102,14 @@ public class MemberServiceImpl implements MemberService {
 		String verificationCode = request.getVerificationCode();
 
 		String storedVerificationCode = redisUtil.getData(email);
+<<<<<<< HEAD
 		if (storedVerificationCode == null || !verificationCode.equals(storedVerificationCode)) {
 			throw new NotFoundException(404, "Invalid Code");
 		}
+=======
+		if(storedVerificationCode==null || !verificationCode.equals(storedVerificationCode)) throw new NotFoundException(404, "Invalid Code");
+
+>>>>>>> 44ed88f9ed331a5eef93e423cca494f1cbf33e14
 		redisUtil.deleteData(verificationCode);
 	}
 }
