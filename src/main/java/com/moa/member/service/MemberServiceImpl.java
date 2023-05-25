@@ -97,6 +97,7 @@ public class MemberServiceImpl implements MemberService {
 		String verificationCode = request.getVerificationCode();
 
 		String storedVerificationCode = redisUtil.getData(email);
+
 		if (storedVerificationCode == null || !verificationCode.equals(storedVerificationCode)) {
 			throw new NotFoundException("요청하신 리소스를 찾을 수 없습니다.");
 		}
