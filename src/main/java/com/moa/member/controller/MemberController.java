@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.moa.member.dto.EmailRequestDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.ResponseDto;
-import com.moa.member.dto.VerificationRequestDto;
 import com.moa.member.exception.NotFoundException;
+import com.moa.member.request.EmailRequestDto;
+import com.moa.member.request.VerificationRequestDto;
 import com.moa.member.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -40,26 +40,26 @@ public class MemberController {
 		return responseDto;
 	}
 
-	// 인증 이메일 전송
 	@PostMapping("/send-email")
-	public ResponseEntity<ResponseDto<?>> authEmail(@RequestBody @Valid EmailRequestDto request) throws Exception {
+	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequestDto request) throws
+		Exception {
 		System.out.println(request);
 		memberService.sendAuthEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.code(200)
-			.msg("Email sent successfully")
+			.msg("인증 코드 관련 이메일이 보내졌습니다.")
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
-	// 인증 코드 확인
 	@GetMapping("/verify-code")
-	public ResponseEntity<ResponseDto<?>> getVerify(@RequestBody @Valid VerificationRequestDto request) throws
+	public ResponseEntity<ResponseDto<?>> checkEmailVerification(
+		@Valid @RequestBody VerificationRequestDto request) throws
 		NotFoundException {
-		memberService.verifyEmail(request);
+		memberService.handleEmailVerification(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.code(200)
-			.msg("Email verification successful")
+			.msg("이메일 인증이 완료되었습니다.")
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

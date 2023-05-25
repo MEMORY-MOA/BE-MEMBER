@@ -38,4 +38,4 @@ out/
 
 ### 설정파일 ###
 *.yml
-application.properties
+src/main/resources/env.properties

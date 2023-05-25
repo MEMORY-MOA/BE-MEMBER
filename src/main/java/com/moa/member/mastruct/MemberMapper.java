@@ -1,15 +1,16 @@
 package com.moa.member.mastruct;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
 import com.moa.member.dto.MemberDto;
 import com.moa.member.entity.Member;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
-    MemberMapper instance = Mappers.getMapper(MemberMapper.class);
+	MemberMapper instance = Mappers.getMapper(MemberMapper.class);
 
-    MemberDto entityToDto(Member memberEntity);
-    Member dtoToEntity(MemberDto memberDto);
+	MemberDto entityToDto(Member memberEntity);
+
+	Member dtoToEntity(MemberDto memberDto);
 }

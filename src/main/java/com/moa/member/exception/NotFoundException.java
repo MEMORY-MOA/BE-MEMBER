@@ -3,13 +3,12 @@ package com.moa.member.exception;
 public class NotFoundException extends RuntimeException {
 	private int code;
 
-	public NotFoundException(int code, String message) {
+	public NotFoundException(String message) {
 		super(message);
-		this.code = code;
+		this.code = 404;
 	}
 
 	public int getCode() {
 		return code;
 	}
 }
-

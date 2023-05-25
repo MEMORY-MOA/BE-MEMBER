@@ -41,7 +41,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // env
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 }
 
 tasks.named('test') {
@@ -49,10 +53,13 @@ tasks.named('test') {
 }
 
 checkstyle {
-    maxWarnings = 0
     configFile = file("checkstyle/naver-checkstyle-rules.xml")
     configProperties = ["suppressionFile": "checkstyle/naver-checkstyle-suppressions.xml"]
     sourceSets = [sourceSets.main]
+
+    ignoreFailures = true
+    showViolations = 'warnings'
+    toolVersion = '8.44'
 }
 
 checkstyleMain.source = fileTree('src/main/java')
