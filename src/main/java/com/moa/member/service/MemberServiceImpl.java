@@ -3,12 +3,16 @@ package com.moa.member.service;
 import java.util.Random;
 
 import com.moa.member.dto.EmailRequestDto;
+
+import org.springframework.stereotype.Service;
+
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.VerificationRequestDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mastruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
+
 import com.moa.member.util.RedisUtil;
 
 import jakarta.mail.internet.MimeMessage;
@@ -19,21 +23,19 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 	private final RedisUtil redisUtil;
 	private final JavaMailSender emailSender;
 	private final SpringTemplateEngine templateEngine;
-    @Override
-    public void SignUp(MemberDto memberDto) {
-        Member member = MemberMapper.instance.dtoToEntity(memberDto);
-        memberRepository.save(member);
-    }
+
 	private MimeMessage createMessage(String to, String ePw)throws Exception{
 
 		MimeMessage  message = emailSender.createMimeMessage();
@@ -105,4 +107,19 @@ public class MemberServiceImpl implements MemberService {
 		redisUtil.deleteData(verificationCode);
 	}
 
+	@Override
+	public void signUp(MemberDto memberDto) {
+		Member member = MemberMapper.instance.dtoToEntity(memberDto);
+		memberRepository.save(member);
+	}
+
+	@Override
+	public boolean duplicateCheckLoginId(String loginId) {
+		return memberRepository.existsMemberByLoginId(loginId);
+	}
+
+	@Override
+	public boolean duplicateCheckName(String name) {
+		return memberRepository.existsMemberByName(name);
+	}
 }
