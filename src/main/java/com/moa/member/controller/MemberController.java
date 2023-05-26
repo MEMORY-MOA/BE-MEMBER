@@ -1,12 +1,21 @@
 package com.moa.member.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.moa.member.controller.request.DuplicateCheckRequest;
+import com.moa.member.controller.request.SignupRequest;
+import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.dto.MemberDto;
-import com.moa.member.dto.ResponseDto;
-import com.moa.member.entity.Member;
+import com.moa.member.mastruct.MemberMapper;
 import com.moa.member.service.MemberService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -14,22 +23,57 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MemberController {
 
-    private final MemberService memberService;
+	private final MemberService memberService;
 
-    @PostMapping("/signup")
-    @ResponseBody
-    public ResponseDto<?> signUp(@RequestBody MemberDto memberDto){
-        System.out.println(memberDto);
-        memberService.SignUp(memberDto);
-        ResponseDto responseDto= ResponseDto.builder()
-                .code(200)
-                .msg("Sign Up Successful")
-                .build();
-        return responseDto;
-    }
+	@PostMapping("/signup")
+	public ResponseDto<?> signUp(@RequestBody @Valid SignupRequest signupRequest) {
+		//System.out.println(signupRequest);
 
+		MemberDto memberDto = MemberMapper.instance.requestToDto(signupRequest);
+		memberService.signUp(memberDto);
 
+		ResponseDto response = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("회원가입이 완료되었습니다.")
+			.build();
 
+		return response;
+	}
 
+	@PostMapping("/check-id")
+	public ResponseDto<Object> checkId(@RequestBody @Valid DuplicateCheckRequest duplicateCheckRequest) {
+
+		if (memberService.duplicateCheckLoginId(duplicateCheckRequest.getCheckSubject())) {
+			ResponseDto response = ResponseDto.builder()
+				.httpStatus(HttpStatus.NOT_ACCEPTABLE)
+				.msg("이미 사용 중인 아이디입니다.")
+				.build();
+			return response;
+		} else {
+			ResponseDto response = ResponseDto.builder()
+				.httpStatus(HttpStatus.OK)
+				.msg("사용 가능한 아이디입니다.")
+				.build();
+			return response;
+		}
+	}
+
+	@PostMapping("/check-name")
+	public ResponseDto<Object> checkName(@RequestBody @Valid DuplicateCheckRequest duplicateCheckRequest) {
+
+		if (memberService.duplicateCheckName(duplicateCheckRequest.getCheckSubject())) {
+			ResponseDto response = ResponseDto.builder()
+				.httpStatus(HttpStatus.NOT_ACCEPTABLE)
+				.msg("이미 사용 중인 이름입니다.")
+				.build();
+			return response;
+		} else {
+			ResponseDto response = ResponseDto.builder()
+				.httpStatus(HttpStatus.OK)
+				.msg("사용 가능한 이름입니다.")
+				.build();
+			return response;
+		}
+	}
 
 }
