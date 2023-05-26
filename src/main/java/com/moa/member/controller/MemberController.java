@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moa.member.controller.request.DuplicateCheckRequest;
+import com.moa.member.controller.request.EmailRequestDto;
 import com.moa.member.controller.request.SignupRequest;
+import com.moa.member.controller.request.VerificationRequestDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.ResponseDto;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mastruct.MemberMapper;
-import com.moa.member.request.EmailRequestDto;
-import com.moa.member.request.VerificationRequestDto;
 import com.moa.member.service.MemberService;
 
 import jakarta.validation.Valid;

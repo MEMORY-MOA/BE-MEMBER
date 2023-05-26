@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.moa.member.controller.request.EmailRequestDto;
+import com.moa.member.controller.request.VerificationRequestDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mastruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
-import com.moa.member.request.EmailRequestDto;
-import com.moa.member.request.VerificationRequestDto;
 import com.moa.member.util.RedisUtil;
 
 import jakarta.mail.internet.MimeMessage;

@@ -1,4 +1,4 @@
-package com.moa.member.request;
+package com.moa.member.controller.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

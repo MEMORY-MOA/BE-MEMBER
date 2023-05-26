@@ -1,8 +1,8 @@
 package com.moa.member.service;
 
+import com.moa.member.controller.request.EmailRequestDto;
+import com.moa.member.controller.request.VerificationRequestDto;
 import com.moa.member.dto.MemberDto;
-import com.moa.member.request.EmailRequestDto;
-import com.moa.member.request.VerificationRequestDto;
 
 public interface MemberService {
 
