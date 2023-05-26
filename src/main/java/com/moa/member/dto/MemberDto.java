@@ -2,10 +2,14 @@ package com.moa.member.dto;
 
 import java.util.UUID;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 public class MemberDto extends BaseDto {
 

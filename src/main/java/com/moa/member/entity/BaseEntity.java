@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @Getter
 @SuperBuilder
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseEntity {

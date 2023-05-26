@@ -1,19 +1,14 @@
 package com.moa.member.exception;
 
 public class NotFoundException extends RuntimeException {
+	private int code;
 
-	private final int code;
+	public NotFoundException(String message) {
+		super(message);
+		this.code = 404;
+	}
 
 	public int getCode() {
 		return code;
-	}
-
-	public NotFoundException(int code) {
-		this.code = code;
-	}
-
-	public NotFoundException(int code, String message) {
-		super(message);
-		this.code = code;
 	}
 }
