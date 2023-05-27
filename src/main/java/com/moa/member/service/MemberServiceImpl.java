@@ -15,7 +15,7 @@ import com.moa.member.dto.MemberDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
 import com.moa.member.exception.NotFoundException;
-import com.moa.member.mastruct.MemberMapper;
+import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
 import com.moa.member.util.RedisUtil;
 
@@ -114,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean duplicateCheckName(String name) {
-		return memberRepository.existsMemberByName(name);
+		return memberRepository.existsMemberByNickname(name);
 	}
 
 }

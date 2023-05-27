@@ -1,6 +1,6 @@
 spring:
   config:
-    import: env.yml
+    import: env.properties
 
 
   data:

@@ -15,7 +15,7 @@ import com.moa.member.controller.request.VerificationRequestDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.ResponseDto;
 import com.moa.member.exception.NotFoundException;
-import com.moa.member.mastruct.MemberMapper;
+import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.service.MemberService;
 
 import jakarta.validation.Valid;
