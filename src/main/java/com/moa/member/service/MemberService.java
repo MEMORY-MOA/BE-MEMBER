@@ -12,7 +12,7 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendAuthEmail(EmailRequestDto request) throws Exception;
+	void sendAuthEmail(EmailRequestDto request);
 
 	void handleEmailVerification(VerificationRequestDto request);
 

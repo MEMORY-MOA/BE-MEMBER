@@ -81,8 +81,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/send-email")
-	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequestDto request) throws
-		Exception {
+	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequestDto request) {
 		System.out.println(request);
 		memberService.sendAuthEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()

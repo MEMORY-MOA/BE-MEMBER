@@ -19,6 +19,7 @@ import com.moa.member.mastruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
 import com.moa.member.util.RedisUtil;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
@@ -32,22 +33,26 @@ public class MemberServiceImpl implements MemberService {
 	private final JavaMailSender emailSender;
 	private final SpringTemplateEngine templateEngine;
 
-	private MimeMessage createMessage(String to, String code) throws Exception {
+	private MimeMessage createMessage(String to, String code) {
+		try {
 
-		MimeMessage message = emailSender.createMimeMessage();
+			MimeMessage message = emailSender.createMimeMessage();
 
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-		helper.setTo(to);
-		helper.setSubject("MOA 이메일 인증 안내");
+			helper.setTo(to);
+			helper.setSubject("MOA 이메일 인증 안내");
 
-		Context context = new Context();
-		context.setVariable("code", code);
+			Context context = new Context();
+			context.setVariable("code", code);
 
-		String html = templateEngine.process("emailContents", context);
-		helper.setText(html, true);
+			String html = templateEngine.process("emailContents", context);
+			helper.setText(html, true);
 
-		return message;
+			return message;
+		} catch (MessagingException ex) {
+			throw new EmailSendException("이메일 전송에 실패했습니다.");
+		}
 	}
 
 	public String createCode() {
@@ -73,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void sendAuthEmail(EmailRequestDto request) throws Exception {
+	public void sendAuthEmail(EmailRequestDto request) {
 		String email = request.getEmail();
 		String code = createCode();
 		MimeMessage message = createMessage(email, code);
