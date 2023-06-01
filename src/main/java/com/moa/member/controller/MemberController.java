@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moa.member.controller.request.DuplicateCheckRequest;
-import com.moa.member.controller.request.EmailRequestDto;
+import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.SignupRequest;
-import com.moa.member.controller.request.VerificationRequestDto;
+import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.ResponseDto;
 import com.moa.member.exception.NotFoundException;
@@ -81,7 +81,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/send-email")
-	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequestDto request) {
+	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
 		System.out.println(request);
 		memberService.sendAuthEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
@@ -93,7 +93,7 @@ public class MemberController {
 
 	@GetMapping("/verify-code")
 	public ResponseEntity<ResponseDto<?>> checkEmailVerification(
-		@Valid @RequestBody VerificationRequestDto request) throws
+		@Valid @RequestBody VerificationRequest request) throws
 		NotFoundException {
 		memberService.handleEmailVerification(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
