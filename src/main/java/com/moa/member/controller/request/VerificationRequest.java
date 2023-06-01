@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class VerificationRequestDto {
+public class VerificationRequest {
 	@Email
 	@NotBlank(message = "이메일은 필수 입력 항목입니다.")
 	@Size(max = 100, message = "이메일은 최대 100자까지 입력 가능합니다.")

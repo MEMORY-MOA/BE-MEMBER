@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import com.moa.member.controller.request.EmailRequestDto;
-import com.moa.member.controller.request.VerificationRequestDto;
+import com.moa.member.controller.request.EmailRequest;
+import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void sendAuthEmail(EmailRequestDto request) {
+	public void sendAuthEmail(EmailRequest request) {
 		String email = request.getEmail();
 		String code = createCode();
 		MimeMessage message = createMessage(email, code);
@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void handleEmailVerification(VerificationRequestDto request) {
+	public void handleEmailVerification(VerificationRequest request) {
 		String email = request.getEmail();
 		String verificationCode = request.getVerificationCode();
 
