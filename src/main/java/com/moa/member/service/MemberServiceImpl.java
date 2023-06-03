@@ -1,6 +1,7 @@
 package com.moa.member.service;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,6 +13,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
+import com.moa.member.dto.MyPageDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
 import com.moa.member.exception.NotFoundException;
@@ -104,6 +106,16 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		redisUtil.deleteData(verificationCode);
+	}
+
+	@Override
+	public MyPageDto findMyPage(UUID memberId) {
+		Member member = memberRepository.findMemberByMemberId(memberId);
+		if (member == null) {
+			throw new NotFoundException("요청하신 리소스를 찾을 수 없습니다.");
+		}
+		MyPageDto myPageDto = MemberMapper.instance.memberEntityToMypageDto(member);
+		return myPageDto;
 	}
 
 	@Override

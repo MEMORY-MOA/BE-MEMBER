@@ -1,10 +1,13 @@
 package com.moa.member.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +16,7 @@ import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
+import com.moa.member.dto.MyPageDto;
 import com.moa.member.dto.ResponseDto;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mastruct.MemberMapper;
@@ -104,4 +108,14 @@ public class MemberController {
 
 	}
 
+	@GetMapping("/my-page")
+	public ResponseEntity<ResponseDto<?>> viewMyPage(@RequestHeader("member") UUID memberId) {
+		MyPageDto myPageDto = memberService.findMyPage(memberId);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("마이페이지 정보 조회가 완료되었습니다.")
+			.data(MemberMapper.instance.myPageDtoToMyPageResponse(myPageDto))
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
 }
