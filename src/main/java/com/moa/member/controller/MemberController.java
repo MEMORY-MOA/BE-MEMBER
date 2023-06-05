@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moa.member.controller.request.DuplicateCheckRequest;
 import com.moa.member.controller.request.EmailRequest;
+import com.moa.member.controller.request.MyPageRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
@@ -115,6 +117,18 @@ public class MemberController {
 			.httpStatus(HttpStatus.OK)
 			.msg("마이페이지 정보 조회가 완료되었습니다.")
 			.data(MemberMapper.instance.myPageDtoToMyPageResponse(myPageDto))
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@PatchMapping("/my-page")
+	public ResponseEntity<ResponseDto<?>> modifyMyPage(@RequestHeader("member") UUID memberId,
+		@RequestBody @Valid MyPageRequest myPageRequest) {
+		MyPageDto myPageDto = MemberMapper.instance.myPageRequestToMyPageDto(myPageRequest);
+		memberService.modifyMyPage(memberId, myPageDto);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("마이페이지 정보 수정이 완료되었습니다.")
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

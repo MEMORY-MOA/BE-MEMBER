@@ -21,4 +21,6 @@ public interface MemberService {
 
 	public MyPageDto findMyPage(UUID memberId);
 
+	void modifyMyPage(UUID memberId, MyPageDto myPageDto);
+
 }

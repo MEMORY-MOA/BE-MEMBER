@@ -1,5 +1,6 @@
 package com.moa.member.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
 	boolean existsMemberByName(String name);
 
-	Member findMemberByMemberId(UUID memberId);
+	Optional<Member> findMemberByMemberId(UUID memberId);
 
 	// Optional<Member> findMemberByLoginId(String loginId);
 
