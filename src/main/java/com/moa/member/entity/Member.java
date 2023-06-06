@@ -1,6 +1,7 @@
 package com.moa.member.entity;
 
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -32,9 +33,11 @@ public class Member extends BaseEntity {
 	private String loginId;
 	private String pw;
 	@Column(unique = true, nullable = false)
-	private String name;
+	private String nickname;
 	@Column(unique = true, nullable = false)
 	private String email;
 	@Column(unique = true, nullable = true)
 	private String phone;
+	@Column(nullable = true)
+	private LocalDateTime deletedAt;
 }

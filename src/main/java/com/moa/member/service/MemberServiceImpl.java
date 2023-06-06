@@ -119,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean duplicateCheckName(String name) {
-		return memberRepository.existsMemberByName(name);
+		return memberRepository.existsMemberByNickname(name);
 	}
 
 }

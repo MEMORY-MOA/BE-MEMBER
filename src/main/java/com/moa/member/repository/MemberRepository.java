@@ -11,7 +11,7 @@ import com.moa.member.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, UUID> {
 	boolean existsMemberByLoginId(String loginId);
 
-	boolean existsMemberByName(String name);
+	boolean existsMemberByNickname(String nickname);
 
 	// Optional<Member> findMemberByLoginId(String loginId);
 

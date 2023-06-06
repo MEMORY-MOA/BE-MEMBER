@@ -41,7 +41,7 @@ public class MemberController {
 			.msg("회원가입이 완료되었습니다.")
 			.build();
 
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@PostMapping("/check-id")
@@ -53,13 +53,13 @@ public class MemberController {
 				.httpStatus(HttpStatus.NOT_ACCEPTABLE)
 				.msg("이미 사용 중인 아이디입니다.")
 				.build();
-			return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
 		} else {
 			ResponseDto response = ResponseDto.builder()
 				.httpStatus(HttpStatus.OK)
 				.msg("사용 가능한 아이디입니다.")
 				.build();
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}
 	}
 
@@ -72,13 +72,13 @@ public class MemberController {
 				.httpStatus(HttpStatus.NOT_ACCEPTABLE)
 				.msg("이미 사용 중인 이름입니다.")
 				.build();
-			return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
 		} else {
 			ResponseDto response = ResponseDto.builder()
 				.httpStatus(HttpStatus.OK)
 				.msg("사용 가능한 이름입니다.")
 				.build();
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}
 	}
 
