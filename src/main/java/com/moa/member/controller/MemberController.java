@@ -14,7 +14,6 @@ import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.ResponseDto;
-import com.moa.member.exception.NotFoundException;
 import com.moa.member.mastruct.MemberMapper;
 import com.moa.member.service.MemberService;
 
@@ -83,7 +82,7 @@ public class MemberController {
 	@PostMapping("/send-email")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
 		System.out.println(request);
-		memberService.sendAuthEmail(request);
+		memberService.sendVerificationEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("인증 코드 관련 이메일이 보내졌습니다.")
@@ -93,9 +92,8 @@ public class MemberController {
 
 	@GetMapping("/verify-code")
 	public ResponseEntity<ResponseDto<?>> checkEmailVerification(
-		@Valid @RequestBody VerificationRequest request) throws
-		NotFoundException {
-		memberService.handleEmailVerification(request);
+		@Valid @RequestBody VerificationRequest request) {
+		memberService.verifyEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("이메일 인증이 완료되었습니다.")

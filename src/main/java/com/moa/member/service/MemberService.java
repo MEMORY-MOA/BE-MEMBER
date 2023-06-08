@@ -12,8 +12,8 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendAuthEmail(EmailRequest request);
+	void sendVerificationEmail(EmailRequest request);
 
-	void handleEmailVerification(VerificationRequest request);
+	void verifyEmail(VerificationRequest request);
 
 }
