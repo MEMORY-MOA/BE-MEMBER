@@ -7,4 +7,6 @@ public interface FriendService {
 	void friendRequest(FriendDto friendDto);
 
 	void friendAccept(FriendDto friendDto);
+
+	void friendDeny(FriendDto friendDto);
 }

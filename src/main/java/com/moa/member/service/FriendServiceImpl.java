@@ -49,4 +49,20 @@ public class FriendServiceImpl implements FriendService {
 		friendRepository.save(acceptedFriend);
 	}
 
+	@Override
+	public void friendDeny(FriendDto friendDto) {
+		Optional<Friend> result1 = friendRepository.findFriendByMemberIdAndFriendId(
+			friendDto.getMemberId(), friendDto.getFriendId()
+		);
+		Optional<Friend> result2 = friendRepository.findFriendByMemberIdAndFriendId(
+			friendDto.getFriendId(), friendDto.getMemberId()
+		);
+
+		result1.orElseThrow(() -> new NotFoundException("해당하는 친구 요청이 없습니다."));
+		result2.orElseThrow(() -> new NotFoundException("해당하는 친구 요청이 없습니다."));
+
+		friendRepository.delete(result1.get());
+		friendRepository.delete(result2.get());
+	}
+
 }
