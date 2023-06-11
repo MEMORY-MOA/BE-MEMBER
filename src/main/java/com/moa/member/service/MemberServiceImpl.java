@@ -49,8 +49,10 @@ public class MemberServiceImpl implements MemberService {
 
 		String storedVerificationCode = redisUtil.getData(email);
 
-		if (storedVerificationCode == null || !verificationCode.equals(storedVerificationCode)) {
-			throw new NotFoundException("요청하신 리소스를 찾을 수 없습니다.");
+		if (storedVerificationCode == null) {
+			throw new NotFoundException("유효하지 않은 인증 코드입니다.");
+		} else if (!verificationCode.equals(storedVerificationCode)) {
+			throw new NotFoundException("인증 코드가 일치하지 않습니다.");
 		}
 
 		redisUtil.deleteData(verificationCode);
