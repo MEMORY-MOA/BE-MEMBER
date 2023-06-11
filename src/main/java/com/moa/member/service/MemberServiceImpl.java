@@ -111,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MyPageDto findMyPage(UUID memberId) {
 		Member member = memberRepository.findMemberByMemberId(memberId)
-			.orElseThrow(() -> new NotFoundException("요청하신 리소스를 찾을 수 없습니다."));
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		MyPageDto myPageDto = MemberMapper.instance.memberEntityToMypageDto(member);
 		return myPageDto;
@@ -120,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void modifyMyPage(UUID memberId, MyPageDto myPageDto) {
 		Member member = memberRepository.findMemberByMemberId(memberId)
-			.orElseThrow(() -> new NotFoundException("요청하신 리소스를 찾을 수 없습니다."));
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		member = MemberMapper.instance.updateMemberEntityFromMyPageDto(member, myPageDto);
 		memberRepository.save(member);
