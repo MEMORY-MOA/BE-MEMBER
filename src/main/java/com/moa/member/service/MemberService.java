@@ -1,7 +1,7 @@
 package com.moa.member.service;
 
-import com.moa.member.controller.request.EmailRequestDto;
-import com.moa.member.controller.request.VerificationRequestDto;
+import com.moa.member.controller.request.EmailRequest;
+import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 
 public interface MemberService {
@@ -12,8 +12,8 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendAuthEmail(EmailRequestDto request) throws Exception;
+	void sendVerificationEmail(EmailRequest request);
 
-	void handleEmailVerification(VerificationRequestDto request);
+	void verifyEmail(VerificationRequest request);
 
 }
