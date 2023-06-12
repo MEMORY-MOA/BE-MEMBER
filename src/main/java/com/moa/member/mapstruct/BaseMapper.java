@@ -1,4 +1,4 @@
-package com.moa.member.mastruct;
+package com.moa.member.mapstruct;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
