@@ -16,7 +16,7 @@ public class MemberDto extends BaseDto {
 	private UUID memberId;
 	private String loginId;
 	private String pw;
-	private String name;
+	private String nickname;
 	private String email;
 	private String phone;
 

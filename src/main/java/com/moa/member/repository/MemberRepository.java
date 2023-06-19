@@ -1,5 +1,6 @@
 package com.moa.member.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import com.moa.member.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, UUID> {
 	boolean existsMemberByLoginId(String loginId);
 
-	boolean existsMemberByName(String name);
+	boolean existsMemberByNickname(String name);
 
 	Member findMemberByMemberId(UUID memberId);
 
@@ -19,4 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
 	// Optional<Member> findMemberByName(String name);
 
+	Optional<Member> findMemberByMemberId(UUID memberId);
 }

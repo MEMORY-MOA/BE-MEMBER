@@ -15,10 +15,10 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendAuthEmail(EmailRequest request);
-
-	void handleEmailVerification(VerificationRequest request);
+	void sendVerificationEmail(EmailRequest request);
 
 	public MyPageDto findMyPage(UUID memberId);
+
+	void verifyEmail(VerificationRequest request);
 
 }
