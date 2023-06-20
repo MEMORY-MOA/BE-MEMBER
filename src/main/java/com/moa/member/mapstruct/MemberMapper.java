@@ -1,9 +1,10 @@
-package com.moa.member.mastruct;
+package com.moa.member.mapstruct;
+
+import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import com.moa.member.controller.request.MyPageRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.response.MyPageResponse;
 import com.moa.member.dto.MemberDto;
@@ -25,7 +26,7 @@ public interface MemberMapper {
 
 	MemberDto requestToDto(SignupRequest signupRequest);
 
-	MyPageDto myPageRequestToMyPageDto(MyPageRequest myPageRequest);
+	List<MemberDto> entityToDto(List<Member> members);
 
 	MyPageResponse myPageDtoToMyPageResponse(MyPageDto myPageDto);
 
