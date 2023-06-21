@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class MyPageDto extends BaseDto {
 
-	private String name;
+	private String nickName;
 	private String email;
 	private Boolean alarm;
 

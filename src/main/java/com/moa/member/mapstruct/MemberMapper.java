@@ -5,12 +5,13 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import com.moa.member.controller.request.MyPageRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.response.MyPageResponse;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
 import com.moa.member.entity.Member;
-import com.moa.member.mastruct.custommapper.CustomMemberMapperImpl;
+import com.moa.member.mapstruct.custommapper.CustomMemberMapperImpl;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
@@ -25,6 +26,8 @@ public interface MemberMapper {
 	Member myPageDtoToMemberEntity(MyPageDto myPageDto);
 
 	MemberDto requestToDto(SignupRequest signupRequest);
+
+	MyPageDto myPageRequestToMyPageDto(MyPageRequest myPageRequest);
 
 	List<MemberDto> entityToDto(List<Member> members);
 

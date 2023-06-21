@@ -1,4 +1,4 @@
-package com.moa.member.mastruct.custommapper;
+package com.moa.member.mapstruct.custommapper;
 
 import org.springframework.stereotype.Component;
 
@@ -21,10 +21,10 @@ public class CustomMemberMapperImpl {
 		member.pw(existingMember.getPw());
 		member.phone(existingMember.getPhone());
 
-		if (myPageDto.getName() == null) {
-			member.name(existingMember.getName());
+		if (myPageDto.getNickName() == null) {
+			member.nickname(existingMember.getNickname());
 		} else {
-			member.name(myPageDto.getName());
+			member.nickname(myPageDto.getNickName());
 		}
 		if (myPageDto.getEmail() == null) {
 			member.email(existingMember.getEmail());
