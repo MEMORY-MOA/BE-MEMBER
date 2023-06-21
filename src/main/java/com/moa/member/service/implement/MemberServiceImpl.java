@@ -1,7 +1,8 @@
-package com.moa.member.service;
+package com.moa.member.service.implement;
 
 import java.util.UUID;
 
+import com.moa.member.service.MemberService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,15 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		redisUtil.deleteData(verificationCode);
+	}
+
+	@Override
+	public void delete(UUID memberId) {
+		Member member = memberRepository.findMemberByMemberId(memberId)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+
+		member.delete();
+		memberRepository.save(member);
 	}
 
 	@Override

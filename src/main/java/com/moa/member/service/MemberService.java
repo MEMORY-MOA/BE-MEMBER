@@ -23,4 +23,5 @@ public interface MemberService {
 
 	void verifyEmail(VerificationRequest request);
 
+    void delete(UUID memberId);
 }

@@ -1,6 +1,7 @@
 package com.moa.member.entity;
 
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -39,4 +40,10 @@ public class Member extends BaseEntity {
 	private String phone;
 	@Column(unique = false, nullable = true)
 	private Boolean alarm;
+
+	private LocalDateTime deletedAt;
+
+	public void delete() {
+		deletedAt = LocalDateTime.now();
+	}
 }
