@@ -12,7 +12,7 @@ import com.moa.member.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, UUID> {
 	boolean existsMemberByLoginId(String loginId);
 
-	boolean existsMemberByNickname(String name);
+	boolean existsMemberByNickname(String nickname);
 
 	// Optional<Member> findMemberByLoginId(String loginId);
 

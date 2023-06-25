@@ -1,5 +1,6 @@
 package com.moa.member.dto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -19,5 +20,6 @@ public class MemberDto extends BaseDto {
 	private String nickname;
 	private String email;
 	private String phone;
+	private LocalDateTime deletedAt;
 
 }
