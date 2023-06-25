@@ -1,14 +1,21 @@
 package com.moa.member.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.moa.member.dto.FriendDto;
+import com.moa.member.dto.FriendsListDto;
 import com.moa.member.entity.Friend;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.NotFoundException;
-import com.moa.member.mastruct.FriendMapper;
+import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.repository.FriendRepository;
 import com.moa.member.repository.MemberRepository;
 
@@ -63,6 +70,30 @@ public class FriendServiceImpl implements FriendService {
 
 		friendRepository.delete(result1.get());
 		friendRepository.delete(result2.get());
+	}
+
+	@Override
+	@Transactional
+	public FriendsListDto getFriends(UUID memberId, int page, Pageable pageable) {
+		Optional<Page<Friend>> pages = friendRepository.findFriendsByMemberIdAndAndCompleted(memberId, true, pageable);
+
+		pages.orElseThrow(() -> new NotFoundException("친구 리스트 조회 중 오류가 발생했습니다."));
+		if (pages.get().getTotalElements() <= 0)
+			throw new NotFoundException("등록된 친구가 없습니다.");
+
+		List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
+		for (Friend friend : pages.get().getContent()) {
+			Optional<Member> result = memberRepository.findById(friend.getFriendId());
+			result.orElseThrow(() -> new NotFoundException("등록된 친구 정보 오류로 리스트를 가져올 수 없습니다."));
+
+			friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(result.get()));
+		}
+
+		return FriendsListDto.builder()
+			.friendsCnt((int)pages.get().getTotalElements())
+			.friendsPage(page)
+			.friendsList(friendsList)
+			.build();
 	}
 
 }
