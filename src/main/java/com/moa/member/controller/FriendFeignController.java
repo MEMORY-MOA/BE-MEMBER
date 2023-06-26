@@ -19,7 +19,6 @@ public class FriendFeignController {
 	@PostMapping("/acceptance")
 	@ResponseStatus(HttpStatus.OK)
 	public void friendAccept(@RequestBody FriendFeignRequest friendFeignRequest) {
-		log.info(String.valueOf(friendFeignRequest.getFriendId()));
 		friendFeignService.friendAccept(FriendMapper.instance.feignRequestToDto(friendFeignRequest));
 	}
 }
