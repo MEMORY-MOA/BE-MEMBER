@@ -33,7 +33,7 @@ public class MemberFeignController {
 		return memberFeignMapper.toResponse(memberFeignService.get(memberId));
 	}
 
-	@GetMapping("find-members")
+	@GetMapping("/find-members")
 	@ResponseStatus(HttpStatus.OK)
 	public List<TimeCapsuleMemberDto> getMembersInfo(@RequestParam("member-id") List<UUID> memberIdList) {
 		return memberFeignMapper.toResponse(memberFeignService.getList(memberIdList));
