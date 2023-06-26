@@ -11,4 +11,5 @@ public class ResponseDto<D> {
 	private final HttpStatus httpStatus;
 	private final String msg;
 	private final D data;
+
 }

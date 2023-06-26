@@ -17,7 +17,7 @@ public class CheckNameValidator extends AbstractValidator<SignupRequest> {
 	@Override
 	protected void doValidate(SignupRequest dto, Errors errors) {
 		if (memberRepository.existsMemberByNicknameAndDeletedAtIsNull(dto.getNickname())) {
-			errors.rejectValue("name", "이름 중복 오류", "이미 사용 중인 이름입니다.");
+			errors.rejectValue("nickname", "닉네임 중복 오류", "이미 사용 중인 닉네임입니다.");
 		}
 	}
 }

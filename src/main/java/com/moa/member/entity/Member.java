@@ -40,7 +40,7 @@ public class Member extends BaseEntity {
 	private String phone;
 	@Column(unique = false, nullable = true)
 	private Boolean alarm;
-
+	@Column(nullable = true)
 	private LocalDateTime deletedAt;
 
 	public void delete() {
