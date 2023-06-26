@@ -4,13 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.moa.member.controller.request.DuplicateCheckRequest;
 import com.moa.member.controller.request.EmailRequest;
@@ -129,6 +123,16 @@ public class MemberController {
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("마이페이지 정보 수정이 완료되었습니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@DeleteMapping
+	public ResponseEntity<ResponseDto> deleteMember(@RequestHeader("member") UUID memberId) {
+		memberService.delete(memberId);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("회원이 탈퇴하였습니다")
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

@@ -1,7 +1,8 @@
-package com.moa.member.service;
+package com.moa.member.service.implement;
 
 import java.util.UUID;
 
+import com.moa.member.service.MemberService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -63,8 +64,17 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public void delete(UUID memberId) {
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+
+		member.delete();
+		memberRepository.save(member);
+	}
+
+	@Override
 	public MyPageDto findMyPage(UUID memberId) {
-		Member member = memberRepository.findMemberByMemberId(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		MyPageDto myPageDto = MemberMapper.instance.memberEntityToMypageDto(member);
@@ -73,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void modifyMyPage(UUID memberId, MyPageDto myPageDto) {
-		Member member = memberRepository.findMemberByMemberId(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		member = MemberMapper.instance.updateMemberEntityFromMyPageDto(member, myPageDto);
@@ -88,12 +98,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean duplicateCheckLoginId(String loginId) {
-		return memberRepository.existsMemberByLoginId(loginId);
+		return memberRepository.existsMemberByLoginIdAndDeletedAtIsNull(loginId);
 	}
 
 	@Override
 	public boolean duplicateCheckName(String name) {
-		return memberRepository.existsMemberByNickname(name);
+		return memberRepository.existsMemberByNicknameAndDeletedAtIsNull(name);
 	}
 
 }

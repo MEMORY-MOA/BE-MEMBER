@@ -43,4 +43,7 @@ public class Member extends BaseEntity {
 	@Column(nullable = true)
 	private LocalDateTime deletedAt;
 
+	public void delete() {
+		deletedAt = LocalDateTime.now();
+	}
 }
