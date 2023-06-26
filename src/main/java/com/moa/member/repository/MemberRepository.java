@@ -10,13 +10,13 @@ import com.moa.member.entity.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, UUID> {
-	boolean existsMemberByLoginId(String loginId);
+	boolean existsMemberByLoginIdAndDeletedAtIsNull(String loginId);
 
-	boolean existsMemberByNickname(String name);
+	boolean existsMemberByNicknameAndDeletedAtIsNull(String name);
 
 	// Optional<Member> findMemberByLoginId(String loginId);
 
 	// Optional<Member> findMemberByName(String name);
 
-	Optional<Member> findMemberByMemberId(UUID memberId);
+	Optional<Member> findMemberByMemberIdAndDeletedAtIsNull(UUID memberId);
 }
