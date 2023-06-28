@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/internal-users")
+@RequestMapping("/internal-members")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberFeignController {
@@ -33,7 +33,7 @@ public class MemberFeignController {
 		return memberFeignMapper.toResponse(memberFeignService.get(memberId));
 	}
 
-	@GetMapping("find-members")
+	@GetMapping("/find-members")
 	@ResponseStatus(HttpStatus.OK)
 	public List<TimeCapsuleMemberDto> getMembersInfo(@RequestParam("member-id") List<UUID> memberIdList) {
 		return memberFeignMapper.toResponse(memberFeignService.getList(memberIdList));

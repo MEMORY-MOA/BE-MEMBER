@@ -1,14 +1,15 @@
-package com.moa.member.service;
+package com.moa.member.service.implement;
 
 import java.util.Optional;
 
+import com.moa.member.service.FriendService;
 import org.springframework.stereotype.Service;
 
 import com.moa.member.dto.FriendDto;
 import com.moa.member.entity.Friend;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.NotFoundException;
-import com.moa.member.mastruct.FriendMapper;
+import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.repository.FriendRepository;
 import com.moa.member.repository.MemberRepository;
 

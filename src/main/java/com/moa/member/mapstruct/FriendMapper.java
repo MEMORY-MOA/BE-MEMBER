@@ -1,7 +1,8 @@
-package com.moa.member.mastruct;
+package com.moa.member.mapstruct;
 
 import java.util.UUID;
 
+import com.moa.member.controller.request.FriendFeignRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -23,4 +24,6 @@ public interface FriendMapper {
 	Friend dtoToEntityInverse(FriendDto friendDto);
 
 	FriendDto entityToDto(Friend friend);
+
+	FriendDto feignRequestToDto(FriendFeignRequest friendFeignRequest);
 }
