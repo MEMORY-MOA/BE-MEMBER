@@ -15,6 +15,8 @@ public interface FriendService {
 
 	void friendDeny(FriendDto friendDto);
 
-	FriendsListDto getFriends(UUID memberId, int page, Pageable pageable);
+	FriendsListDto getFriends(UUID memberId, int page, Pageable pageable, Boolean completed);
+
+	FriendsListDto findFriends(String keyword, int page, Pageable pageable);
 
 }

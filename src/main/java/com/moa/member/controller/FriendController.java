@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moa.member.controller.request.FriendRequest;
+import com.moa.member.controller.request.SearchFriendRequest;
 import com.moa.member.dto.FriendsListDto;
 import com.moa.member.dto.ResponseDto;
 import com.moa.member.mapstruct.FriendMapper;
@@ -63,12 +64,44 @@ public class FriendController {
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId, @PathVariable int page,
 		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
-		FriendsListDto friendsList = friendService.getFriends(memberId, page, pageable);
+		FriendsListDto friendsList = friendService.getFriends(memberId, page, pageable, true);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()
 				.httpStatus(HttpStatus.OK)
 				.msg("친구 리스트 검색을 완료했습니다.")
+				.data(friendsList)
+				.build()
+		);
+	}
+
+	@GetMapping("/requests/{page}")
+	public ResponseEntity<ResponseDto> getFriendsRequests(@RequestHeader UUID memberId, @PathVariable int page,
+		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+
+		FriendsListDto friendsList = friendService.getFriends(memberId, page, pageable, false);
+
+		return ResponseEntity.status(HttpStatus.OK).body(
+			ResponseDto.<FriendsListDto>builder()
+				.httpStatus(HttpStatus.OK)
+				.msg("친구 리스트 검색을 완료했습니다.")
+				.data(friendsList)
+				.build()
+		);
+	}
+
+	@PostMapping("/{page}")
+	public ResponseEntity<ResponseDto> searchFriends(
+		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
+		@PathVariable int page,
+		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+
+		FriendsListDto friendsList = friendService.findFriends(searchFriendRequest.getKeyword(), page, pageable);
+
+		return ResponseEntity.status(HttpStatus.OK).body(
+			ResponseDto.<FriendsListDto>builder()
+				.httpStatus(HttpStatus.OK)
+				.msg("친구 검색을 완료했습니다.")
 				.data(friendsList)
 				.build()
 		);
