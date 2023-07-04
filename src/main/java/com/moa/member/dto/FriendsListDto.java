@@ -17,9 +17,13 @@ public class FriendsListDto {
 	private int friendsPage;
 	private List<FriendInfo> friendsList;
 
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	public static class FriendInfo {
 		private UUID memberId;
+		private String loginId;
 		private String nickname;
-
 	}
 }

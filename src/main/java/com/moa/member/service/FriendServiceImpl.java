@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.moa.member.repository.FriendQueryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FriendServiceImpl implements FriendService {
 
 	private final FriendRepository friendRepository;
 	private final MemberRepository memberRepository;
+	private final FriendQueryRepository friendQueryRepository;
 
 	@Override
 	public void friendRequest(FriendDto friendDto) {
@@ -96,7 +100,7 @@ public class FriendServiceImpl implements FriendService {
 			.friendsList(friendsList)
 			.build();
 	}
-
+/*
 	@Override
 	public FriendsListDto findFriends(String keyword, int page, Pageable pageable) {
 		Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword);
@@ -111,6 +115,17 @@ public class FriendServiceImpl implements FriendService {
 			.friendsCnt((int)pages.get().getTotalElements())
 			.friendsPage(page)
 			.friendsList(friendsList)
+			.build();
+	}
+*/
+	@Override
+	public FriendsListDto findMyFriends(String keyword, Pageable pageable) {
+		List<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNickname(keyword, pageable);
+
+		return FriendsListDto.builder()
+			.friendsCnt(members.size())
+			.friendsPage(pageable.getPageNumber())
+			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members))
 			.build();
 	}
 

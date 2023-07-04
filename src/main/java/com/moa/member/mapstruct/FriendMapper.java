@@ -1,5 +1,6 @@
 package com.moa.member.mapstruct;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.mapstruct.Mapper;
@@ -28,4 +29,6 @@ public interface FriendMapper {
 	FriendDto entityToDto(Friend friend);
 
 	FriendsListDto.FriendInfo memberEntityToFriendInfo(Member member);
+
+	List<FriendsListDto.FriendInfo> memberEntityToFriendInfo(List<Member> members);
 }
