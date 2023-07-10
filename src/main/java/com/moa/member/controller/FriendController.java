@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.moa.member.controller.request.FriendRequest;
 import com.moa.member.controller.request.SearchFriendRequest;
 import com.moa.member.dto.FriendsListDto;
-import com.moa.member.dto.ResponseDto;
+import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.service.FriendService;
 
