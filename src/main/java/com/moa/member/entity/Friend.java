@@ -3,15 +3,18 @@ package com.moa.member.entity;
 import java.sql.Types;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
 
 @Getter
 @Builder
@@ -30,9 +33,18 @@ public class Friend {
 	@JdbcTypeCode(Types.VARCHAR)
 	private UUID friendId;
 	@Column(nullable = false)
-	boolean completed = false;
+	@Enumerated(EnumType.ORDINAL)
+	FriendRequestStatus friendRequestStatus;
 
-	public void changeCompletedStatus() {
-		this.completed = !this.completed;
+	public void concludeFriendRequest() {
+		this.friendRequestStatus = FriendRequestStatus.Concluded;
+	}
+
+	public void sendFriendRequest() {
+		this.friendRequestStatus = FriendRequestStatus.Scent;
+	}
+
+	public void receiveFriendRequest() {
+		this.friendRequestStatus = FriendRequestStatus.Received;
 	}
 }

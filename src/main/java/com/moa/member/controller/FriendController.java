@@ -2,7 +2,6 @@ package com.moa.member.controller;
 
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,11 +21,13 @@ import com.moa.member.controller.request.FriendRequest;
 import com.moa.member.controller.request.SearchFriendRequest;
 import com.moa.member.dto.FriendsListDto;
 import com.moa.member.dto.ResponseDto;
+import com.moa.member.entity.FriendRequestStatus;
 import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.service.FriendService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/friends")
@@ -63,11 +64,11 @@ public class FriendController {
 		return buildOkResponse("친구 요청이 거절되었습니다.");
 	}
 
-	@GetMapping("/{page}")
-	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId, @PathVariable int page,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+	@GetMapping
+	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
+		@PageableDefault(size = 10) Pageable pageable) {
 
-		FriendsListDto friendsList = friendService.getFriends(memberId, page, pageable, true);
+		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()
@@ -78,11 +79,11 @@ public class FriendController {
 		);
 	}
 
-	@GetMapping("/requests/{page}")
-	public ResponseEntity<ResponseDto> getFriendsRequests(@RequestHeader UUID memberId, @PathVariable int page,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+	@GetMapping("/requests/")
+	public ResponseEntity<ResponseDto> getFriendsRequests(@RequestHeader UUID memberId,
+		@PageableDefault(size = 10) Pageable pageable) {
 
-		FriendsListDto friendsList = friendService.getFriends(memberId, page, pageable, false);
+		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Received);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()

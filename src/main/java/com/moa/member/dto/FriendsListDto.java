@@ -3,6 +3,8 @@ package com.moa.member.dto;
 import java.util.List;
 import java.util.UUID;
 
+import com.moa.member.entity.FriendRequestStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +27,6 @@ public class FriendsListDto {
 		private UUID memberId;
 		private String loginId;
 		private String nickname;
+		private FriendRequestStatus friendRequestStatus;
 	}
 }
