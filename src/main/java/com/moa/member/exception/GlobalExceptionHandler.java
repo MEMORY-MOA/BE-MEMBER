@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.controller.validation.CheckLoginIdValidator;
 import com.moa.member.controller.validation.CheckNameValidator;
-import com.moa.member.dto.ResponseDto;
 
 import lombok.RequiredArgsConstructor;
 

@@ -11,9 +11,9 @@ import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.MyPageRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.request.VerificationRequest;
+import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
-import com.moa.member.dto.ResponseDto;
 import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.service.MemberService;
 
