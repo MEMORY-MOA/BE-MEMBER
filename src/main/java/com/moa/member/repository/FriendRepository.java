@@ -1,6 +1,5 @@
 package com.moa.member.repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,6 +11,4 @@ import com.moa.member.entity.Friend;
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
 	Optional<Friend> findFriendByMemberIdAndFriendId(UUID memberId, UUID friendId);
-
-	List<Friend> findFriendByMemberIdAndCompleted(UUID memberId, boolean completed);
 }
