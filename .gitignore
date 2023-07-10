@@ -39,3 +39,6 @@ out/
 ### 설정파일 ###
 src/main/resources/env.yml
 src/main/resources/env.properties
+
+### QueryDSL ###
+**/generated/**/mapper/
