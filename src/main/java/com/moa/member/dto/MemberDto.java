@@ -3,6 +3,8 @@ package com.moa.member.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.moa.member.entity.Color;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,5 +23,6 @@ public class MemberDto extends BaseDto {
 	private String email;
 	private String phone;
 	private LocalDateTime deletedAt;
+	private Color color;
 
 }

@@ -2,6 +2,7 @@ package com.moa.member.entity;
 
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -42,8 +45,16 @@ public class Member extends BaseEntity {
 	private Boolean alarm;
 	@Column(nullable = true)
 	private LocalDateTime deletedAt;
+	@Column(nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	private Color color;
 
 	public void delete() {
 		deletedAt = LocalDateTime.now();
+	}
+
+	public void setColor() {
+		int randomColor = new Random().nextInt(Color.values().length);
+		this.color = Color.values()[randomColor];
 	}
 }
