@@ -1,10 +1,8 @@
 package com.moa.member.entity;
 
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
@@ -26,7 +24,6 @@ public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue
 	@UuidGenerator
-	@JdbcTypeCode(Types.VARCHAR)
 	private UUID memberId;
 
 	@Column(unique = true, nullable = false)
