@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.moa.member.dto.FriendIdListDto;
-import com.moa.member.entity.Friend;
 import com.moa.member.entity.Member;
 import com.moa.member.mapstruct.FriendSearchFeignMapper;
 import com.moa.member.repository.FriendRepository;
@@ -26,10 +25,9 @@ public class FriendSearchFeignServiceImpl implements FriendSearchFeignService {
 	@Override
 	public FriendIdListDto findFriendsIdByNickname(UUID memberId, String keyword) {
 		List<UUID> memberIdList = new ArrayList<>();
-		List<Friend> friendsList = friendRepository.findFriendByMemberIdAndCompleted(memberId, true);
-		for (Friend friend : friendsList) {
-			Member member = memberRepository.findMemberByMemberIdAndNicknameContaining(friend.getFriendId(), keyword)
-				.orElse(null);
+		List<Member> memberList = memberRepository.findMemberByNicknameContainingAndDeletedAtIsNull(
+			keyword);
+		for (Member member : memberList) {
 			if (member != null) {
 				memberIdList.add(member.getMemberId());
 			}
