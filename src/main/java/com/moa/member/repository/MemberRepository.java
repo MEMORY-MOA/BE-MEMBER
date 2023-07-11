@@ -1,5 +1,6 @@
 package com.moa.member.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,9 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
 	boolean existsMemberByNicknameAndDeletedAtIsNull(String nickname);
 
-	// Optional<Member> findMemberByLoginId(String loginId);
-
-	// Optional<Member> findMemberByName(String name);
+	List<Member> findMemberByNicknameContainingAndDeletedAtIsNull(String nickname);
 
 	Optional<Member> findMemberByMemberIdAndDeletedAtIsNull(UUID memberId);
 

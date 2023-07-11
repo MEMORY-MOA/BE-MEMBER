@@ -2,7 +2,6 @@ package com.moa.member.service.implement;
 
 import java.util.UUID;
 
-import com.moa.member.service.MemberService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -16,17 +15,21 @@ import com.moa.member.exception.EmailSendException;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
+import com.moa.member.service.MemberService;
 import com.moa.member.util.EmailUtil;
 import com.moa.member.util.RedisUtil;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final MemberMapper memberMapper;
 
 	private final RedisUtil redisUtil;
 	private final JavaMailSender emailSender;
@@ -94,6 +97,7 @@ public class MemberServiceImpl implements MemberService {
 	public void signUp(MemberDto memberDto) {
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
 		memberRepository.save(member);
+		log.info("memberDto = {}", memberMapper.entityToDto(member));
 	}
 
 	@Override

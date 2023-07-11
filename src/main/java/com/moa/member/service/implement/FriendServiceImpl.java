@@ -1,11 +1,9 @@
 package com.moa.member.service.implement;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.moa.member.dto.FriendDto;
 import com.moa.member.dto.FriendsListDto;
 import com.moa.member.entity.Friend;
+import com.moa.member.entity.FriendRequestStatus;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mapstruct.FriendMapper;
@@ -39,9 +38,10 @@ public class FriendServiceImpl implements FriendService {
 		result.orElseThrow(() -> new NotFoundException("친구 요청의 대상을 찾을 수 없습니다."));
 
 		Friend friend1 = FriendMapper.instance.dtoToEntity(friendDto);
-		friend1.changeCompletedStatus();
+		friend1.sendFriendRequest();
 
 		Friend friend2 = FriendMapper.instance.dtoToEntityInverse(friendDto);
+		friend2.receiveFriendRequest();
 
 		friendRepository.save(friend1);
 		friendRepository.save(friend2);
@@ -50,15 +50,24 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public void friendAccept(FriendDto friendDto) {
-		Optional<Friend> result = friendRepository.findFriendByMemberIdAndFriendId(
+		Optional<Friend> result1 = friendRepository.findFriendByMemberIdAndFriendId(
 			friendDto.getMemberId(), friendDto.getFriendId()
 		);
-		result.orElseThrow(() -> new NotFoundException("해당하는 친구 요청이 없습니다."));
+		Optional<Friend> result2 = friendRepository.findFriendByMemberIdAndFriendId(
+			friendDto.getFriendId(), friendDto.getMemberId()
+		);
 
-		Friend acceptedFriend = result.get();
-		acceptedFriend.changeCompletedStatus();
+		result1.orElseThrow(() -> new NotFoundException("해당하는 친구 요청이 없습니다."));
+		result2.orElseThrow(() -> new NotFoundException("해당하는 친구 요청이 없습니다."));
 
-		friendRepository.save(acceptedFriend);
+		Friend acceptedFriend1 = result1.get();
+		Friend acceptedFriend2 = result2.get();
+
+		acceptedFriend1.concludeFriendRequest();
+		acceptedFriend2.concludeFriendRequest();
+
+		friendRepository.save(acceptedFriend1);
+		friendRepository.save(acceptedFriend2);
 	}
 
 	@Override
@@ -79,9 +88,9 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	@Transactional
-	public FriendsListDto getFriends(UUID memberId, int page, Pageable pageable, Boolean completed) {
-		Optional<Page<Friend>> pages = friendRepository.findFriendsByMemberIdAndAndCompleted(memberId, completed,
-			pageable);
+	public FriendsListDto getFriends(UUID memberId, Pageable pageable, FriendRequestStatus friendRequestStatus) {
+		List<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByMemberIdAndFriendRequestStatus(
+			memberId, friendRequestStatus, pageable);
 
 		pages.orElseThrow(() -> new NotFoundException("친구 리스트 조회 중 오류가 발생했습니다."));
 		if (pages.get().getTotalElements() <= 0)
@@ -100,6 +109,7 @@ public class FriendServiceImpl implements FriendService {
 			.friendsPage(page)
 			.friendsList(friendsList)
 			.build();
+
 	}
 
 	@Override
