@@ -96,30 +96,29 @@ public class FriendServiceImpl implements FriendService {
 		}
 
 		return FriendsListDto.builder()
-			.friendsCnt((int)pages.get().getTotalElements())
+			.friendsCnt((int) pages.get().getTotalElements())
 			.friendsPage(page)
 			.friendsList(friendsList)
 			.build();
 	}
 
-	/*
-		@Override
-		public FriendsListDto findFriends(String keyword, int page, Pageable pageable) {
-			Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword);
-			pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
+	@Override
+	public FriendsListDto findFriends(String keyword, Pageable pageable) {
+		Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword);
+		pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
 
-			List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
-			for (Member member : pages.get().getContent()) {
-				friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(member));
-			}
-
-			return FriendsListDto.builder()
-				.friendsCnt((int)pages.get().getTotalElements())
-				.friendsPage(page)
-				.friendsList(friendsList)
-				.build();
+		List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
+		for (Member member : pages.get().getContent()) {
+			friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(member));
 		}
-	*/
+
+		return FriendsListDto.builder()
+			.friendsCnt((int) pages.get().getTotalElements())
+			.friendsPage(page)
+			.friendsList(friendsList)
+			.build();
+	}
+
 	@Override
 	public FriendsListDto findMyFriends(String keyword, Pageable pageable) {
 		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNickname(keyword, pageable);

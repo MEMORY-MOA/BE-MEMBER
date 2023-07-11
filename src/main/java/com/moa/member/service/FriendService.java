@@ -17,7 +17,7 @@ public interface FriendService {
 
 	FriendsListDto getFriends(UUID memberId, int page, Pageable pageable, Boolean completed);
 
-//	FriendsListDto findFriends(String keyword, int page, Pageable pageable);
+	FriendsListDto findFriends(String keyword, Pageable pageable);
 
 	FriendsListDto findMyFriends(String keyword, Pageable pageable);
 }
