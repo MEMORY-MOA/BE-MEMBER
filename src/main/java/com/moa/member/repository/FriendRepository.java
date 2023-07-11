@@ -17,5 +17,4 @@ public interface FriendRepository extends JpaRepository<Friend, Integer> {
 
 	Optional<Page<Friend>> findFriendsByMemberIdAndFriendRequestStatus(UUID memberId,
 		FriendRequestStatus friendRequestStatus, Pageable pageable);
-
 }

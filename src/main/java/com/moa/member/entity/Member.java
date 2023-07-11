@@ -1,11 +1,9 @@
 package com.moa.member.entity;
 
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,9 +22,9 @@ import lombok.experimental.SuperBuilder;
 public class Member extends BaseEntity {
 
 	@Id
-	@GeneratedValue
-	@UuidGenerator
-	@JdbcTypeCode(Types.VARCHAR)
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(columnDefinition = "BINARY(16)")
 	private UUID memberId;
 
 	@Column(unique = true, nullable = false)

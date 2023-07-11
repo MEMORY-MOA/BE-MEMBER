@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.moa.member.controller.request.FriendRequest;
 import com.moa.member.controller.request.SearchFriendRequest;
+import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.dto.FriendsListDto;
-import com.moa.member.dto.ResponseDto;
 import com.moa.member.entity.FriendRequestStatus;
+
 import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.service.FriendService;
 
@@ -112,14 +113,13 @@ public class FriendController {
 	}
 	*/
 
-	@PostMapping("/my-friends/{page}")
+	@PostMapping("/my-friends")
 	public ResponseEntity<ResponseDto> searchMyFriends(
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
-		@PathVariable int page) {
+		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		log.info(searchFriendRequest.getKeyword());
-		Pageable pageRequest = PageRequest.of(page, 10, Sort.Direction.ASC, "nickname");
-		FriendsListDto friendsList = friendService.findMyFriends(searchFriendRequest.getKeyword(), pageRequest);
+		FriendsListDto friendsList = friendService.findMyFriends(searchFriendRequest.getKeyword(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()

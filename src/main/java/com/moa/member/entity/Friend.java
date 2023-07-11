@@ -1,6 +1,5 @@
 package com.moa.member.entity;
 
-import java.sql.Types;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -27,10 +26,8 @@ public class Friend {
 	private int id;
 
 	@Column(nullable = false)
-	@JdbcTypeCode(Types.VARCHAR)
 	private UUID memberId;
 	@Column(nullable = false)
-	@JdbcTypeCode(Types.VARCHAR)
 	private UUID friendId;
 	@Column(nullable = false)
 	@Enumerated(EnumType.ORDINAL)
