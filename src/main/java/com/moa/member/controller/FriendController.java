@@ -68,7 +68,7 @@ public class FriendController {
 	@GetMapping
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
 		@PageableDefault(size = 10) Pageable pageable) {
-
+    
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
@@ -94,14 +94,13 @@ public class FriendController {
 				.build()
 		);
 	}
-/*
-	@PostMapping("/{page}")
+
+	@PostMapping
 	public ResponseEntity<ResponseDto> searchFriends(
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
-		@PathVariable int page,
 		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
-		FriendsListDto friendsList = friendService.findFriends(searchFriendRequest.getKeyword(), page, pageable);
+		FriendsListDto friendsList = friendService.findFriends(searchFriendRequest.getKeyword(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()
@@ -111,7 +110,6 @@ public class FriendController {
 				.build()
 		);
 	}
-	*/
 
 	@PostMapping("/my-friends")
 	public ResponseEntity<ResponseDto> searchMyFriends(
