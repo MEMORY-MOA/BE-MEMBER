@@ -1,34 +1,23 @@
 package com.moa.member.controller;
 
-import java.util.UUID;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.moa.member.controller.request.FriendRequest;
 import com.moa.member.controller.request.SearchFriendRequest;
 import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.dto.FriendsListDto;
 import com.moa.member.entity.FriendRequestStatus;
-
 import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.service.FriendService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/friends")
@@ -68,7 +57,7 @@ public class FriendController {
 	@GetMapping
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
 		@PageableDefault(size = 10) Pageable pageable) {
-    
+
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
 		return ResponseEntity.status(HttpStatus.OK).body(

@@ -18,7 +18,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +28,7 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Member> findMemberByFriendIdOrFriendNickname(String keyword, Pageable pageable) {
+	public Page<Member> findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(String keyword, Pageable pageable) {
 		JPAQuery<Member> query = queryFactory.selectFrom(member)
 			.from(member)
 			.join(friend)
@@ -40,11 +39,21 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 			.limit(pageable.getPageSize())
 			.orderBy(member.nickname.asc());
 
-		return query.fetch();
+		List<Member> memberList = query.fetch();
+
+		JPAQuery<Long> countQuery = queryFactory
+			.select(member.count())
+			.from(member)
+			.join(friend)
+			.on(member.memberId.eq(friend.memberId)) // 내 친구
+			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
+			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded));
+
+		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
 	}
 
 	@Override
-	public List<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
+	public Page<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
 		FriendRequestStatus friendRequestStatus, Pageable pageable) {
 		JPAQuery<FriendsListDto.FriendInfo> query = queryFactory
 			.select(Projections.bean(FriendsListDto.FriendInfo.class,
@@ -62,15 +71,15 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 			.limit(pageable.getPageSize())
 			.orderBy(member.nickname.asc());
 
-		List<Member> memberList = query.fetch();
+		List<FriendsListDto.FriendInfo> memberList = query.fetch();
 
 		JPAQuery<Long> countQuery = queryFactory
 			.select(member.count())
 			.from(member)
 			.join(friend)
-			.on(member.memberId.eq(friend.memberId))
-			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
-			.where(friend.completed.eq(true));
+			.on(member.memberId.eq(friend.friendId))
+			.where(friend.memberId.eq(memberId))
+			.where(friend.friendRequestStatus.eq(friendRequestStatus));
 
 		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
 	}
