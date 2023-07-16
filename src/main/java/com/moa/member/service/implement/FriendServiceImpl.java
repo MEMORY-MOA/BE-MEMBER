@@ -106,6 +106,7 @@ public class FriendServiceImpl implements FriendService {
 	public FriendsListDto findFriends(String keyword, Pageable pageable) {
 		Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword,
 			keyword, pageable);
+
 		pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
 
 		List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();

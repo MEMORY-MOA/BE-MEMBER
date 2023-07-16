@@ -65,7 +65,7 @@ public class FriendController {
 	@GetMapping
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
 		@PageableDefault(size = 10) Pageable pageable) {
-
+    
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
