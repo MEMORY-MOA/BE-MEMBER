@@ -1,9 +1,11 @@
 package com.moa.member.service.implement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,34 +91,35 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	@Transactional
 	public FriendsListDto getFriends(UUID memberId, Pageable pageable, FriendRequestStatus friendRequestStatus) {
-		List<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByMemberIdAndFriendRequestStatus(
+		Page<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByMemberIdAndFriendRequestStatus(
 			memberId, friendRequestStatus, pageable);
 
-		return FriendsListDto.builder().friendsCnt(members.size())
+		return FriendsListDto.builder()
+			.friendsCnt(members.getTotalPages())
 			.friendsPage(pageable.getPageNumber())
-			.friendsList(members)
+			.friendsList(members.getContent())
 			.build();
 
 	}
 
-	/*
-		@Override
-		public FriendsListDto findFriends(String keyword, int page, Pageable pageable) {
-			Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword);
-			pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
+	@Override
+	public FriendsListDto findFriends(String keyword, Pageable pageable) {
+		Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword,
+			keyword, pageable);
+		pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
 
-			List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
-			for (Member member : pages.get().getContent()) {
-				friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(member));
-			}
-
-			return FriendsListDto.builder()
-				.friendsCnt((int)pages.get().getTotalElements())
-				.friendsPage(page)
-				.friendsList(friendsList)
-				.build();
+		List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
+		for (Member member : pages.get().getContent()) {
+			friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(member));
 		}
-	*/
+
+		return FriendsListDto.builder()
+			.friendsCnt((int)pages.get().getTotalElements())
+			.friendsPage(pageable.getPageNumber())
+			.friendsList(friendsList)
+			.build();
+	}
+
 	@Override
 	public FriendsListDto findMyFriends(String keyword, Pageable pageable) {
 		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNickname(keyword, pageable);

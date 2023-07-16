@@ -1,6 +1,5 @@
 package com.moa.member.repository;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -15,7 +14,7 @@ import com.moa.member.entity.Member;
 public interface FriendQueryRepository {
 	Page<Member> findMemberByFriendIdOrFriendNickname(String keyword, Pageable pageable);
 
-	List<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
+	Page<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
 		FriendRequestStatus friendRequestStatus,
 		Pageable pageable);
 }
