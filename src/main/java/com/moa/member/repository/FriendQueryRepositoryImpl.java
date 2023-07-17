@@ -107,7 +107,7 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
 			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded));
 
-		return PageableExecutionUtils.getPage(friendsList, pageable, countQuery::fetchOne);
+		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
 
 	}
 
