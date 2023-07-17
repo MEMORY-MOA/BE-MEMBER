@@ -6,7 +6,9 @@ import static com.moa.member.entity.QMember.*;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.moa.member.dto.FriendsListDto;
@@ -15,9 +17,6 @@ import com.moa.member.entity.Member;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.support.PageableExecutionUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +44,7 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 			.select(member.count())
 			.from(member)
 			.join(friend)
-			.on(member.memberId.eq(friend.memberId)) // 내 친구
+			.on(member.memberId.eq(friend.memberId))
 			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
 			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded));
 
@@ -108,7 +107,8 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
 			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded));
 
-		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
+		return PageableExecutionUtils.getPage(friendsList, pageable, countQuery::fetchOne);
+
 	}
 
 }

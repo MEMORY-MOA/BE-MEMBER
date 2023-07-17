@@ -1,5 +1,18 @@
 package com.moa.member.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.moa.member.controller.request.FriendRequest;
 import com.moa.member.controller.request.SearchFriendRequest;
 import com.moa.member.controller.response.ResponseDto;
@@ -69,8 +82,23 @@ public class FriendController {
 		);
 	}
 
-	@GetMapping("/requests/")
-	public ResponseEntity<ResponseDto> getFriendsRequests(@RequestHeader UUID memberId,
+	@GetMapping("/scent-requests/")
+	public ResponseEntity<ResponseDto> getScentFriendsRequests(@RequestHeader UUID memberId,
+		@PageableDefault(size = 10) Pageable pageable) {
+
+		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Scent);
+
+		return ResponseEntity.status(HttpStatus.OK).body(
+			ResponseDto.<FriendsListDto>builder()
+				.httpStatus(HttpStatus.OK)
+				.msg("내가 보낸 친구 요청 리스트 검색을 완료했습니다.")
+				.data(friendsList)
+				.build()
+		);
+	}
+
+	@GetMapping("/received-requests/")
+	public ResponseEntity<ResponseDto> getReceivedFriendsRequests(@RequestHeader UUID memberId,
 		@PageableDefault(size = 10) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Received);
@@ -78,7 +106,7 @@ public class FriendController {
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()
 				.httpStatus(HttpStatus.OK)
-				.msg("친구 리스트 검색을 완료했습니다.")
+				.msg("친구 요청 리스트 검색을 완료했습니다.")
 				.data(friendsList)
 				.build()
 		);
