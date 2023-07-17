@@ -94,10 +94,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void signUp(MemberDto memberDto) {
+	public MemberDto signUp(MemberDto memberDto) {
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
-		memberRepository.save(member);
-		log.info("memberDto = {}", memberMapper.entityToDto(member));
+		Member result = memberRepository.save(member);
+		log.info("memberDto = {}", memberMapper.entityToDto(result));
+		return memberMapper.entityToDto(result);
 	}
 
 	@Override

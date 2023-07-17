@@ -12,9 +12,11 @@ import com.moa.member.entity.Member;
 
 @Repository
 public interface FriendQueryRepository {
-	Page<Member> findMemberByFriendIdOrFriendNickname(String keyword, Pageable pageable);
+	Page<Member> findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(String keyword, Pageable pageable);
 
 	Page<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
 		FriendRequestStatus friendRequestStatus,
 		Pageable pageable);
+
+	Page<Member> findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(UUID memberId, String keyword, Pageable pageable);
 }

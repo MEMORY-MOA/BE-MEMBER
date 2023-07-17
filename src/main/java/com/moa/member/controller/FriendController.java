@@ -1,7 +1,5 @@
 package com.moa.member.controller;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -22,10 +20,17 @@ import com.moa.member.dto.FriendsListDto;
 import com.moa.member.entity.FriendRequestStatus;
 import com.moa.member.mapstruct.FriendMapper;
 import com.moa.member.service.FriendService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/friends")
@@ -65,7 +70,7 @@ public class FriendController {
 	@GetMapping
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
 		@PageableDefault(size = 10) Pageable pageable) {
-    
+
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
@@ -124,12 +129,12 @@ public class FriendController {
 	}
 
 	@PostMapping("/my-friends")
-	public ResponseEntity<ResponseDto> searchMyFriends(
+	public ResponseEntity<ResponseDto> searchMyFriends(@RequestHeader UUID memberId,
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
 		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		log.info(searchFriendRequest.getKeyword());
-		FriendsListDto friendsList = friendService.findMyFriends(searchFriendRequest.getKeyword(), pageable);
+		FriendsListDto friendsList = friendService.findMyFriends(memberId, searchFriendRequest.getKeyword(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()

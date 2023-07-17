@@ -99,31 +99,22 @@ public class FriendServiceImpl implements FriendService {
 			.friendsPage(pageable.getPageNumber())
 			.friendsList(members.getContent())
 			.build();
-
 	}
 
 	@Override
 	public FriendsListDto findFriends(String keyword, Pageable pageable) {
-		Optional<Page<Member>> pages = memberRepository.findMemberByLoginIdContainingOrNicknameContaining(keyword,
-			keyword, pageable);
-
-		pages.orElseThrow(() -> new NotFoundException("검색 결과가 없습니다."));
-
-		List<FriendsListDto.FriendInfo> friendsList = new ArrayList<>();
-		for (Member member : pages.get().getContent()) {
-			friendsList.add(FriendMapper.instance.memberEntityToFriendInfo(member));
-		}
+		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
 
 		return FriendsListDto.builder()
-			.friendsCnt((int)pages.get().getTotalElements())
+			.friendsCnt(members.getTotalPages())
 			.friendsPage(pageable.getPageNumber())
-			.friendsList(friendsList)
+			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members.getContent()))
 			.build();
 	}
 
 	@Override
-	public FriendsListDto findMyFriends(String keyword, Pageable pageable) {
-		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNickname(keyword, pageable);
+	public FriendsListDto findMyFriends(UUID memberId, String keyword, Pageable pageable) {
+		Page<Member> members = friendQueryRepository.findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(memberId, keyword, pageable);
 
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalPages())

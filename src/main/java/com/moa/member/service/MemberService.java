@@ -9,7 +9,7 @@ import com.moa.member.dto.MyPageDto;
 
 public interface MemberService {
 
-	void signUp(MemberDto memberDto);
+	MemberDto signUp(MemberDto memberDto);
 
 	boolean duplicateCheckLoginId(String loginId);
 
