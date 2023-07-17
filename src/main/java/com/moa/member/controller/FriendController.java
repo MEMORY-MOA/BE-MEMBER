@@ -101,12 +101,12 @@ public class FriendController {
 	}
 
 	@PostMapping("/my-friends")
-	public ResponseEntity<ResponseDto> searchMyFriends(
+	public ResponseEntity<ResponseDto> searchMyFriends(@RequestHeader UUID memberId,
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
 		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		log.info(searchFriendRequest.getKeyword());
-		FriendsListDto friendsList = friendService.findMyFriends(searchFriendRequest.getKeyword(), pageable);
+		FriendsListDto friendsList = friendService.findMyFriends(memberId, searchFriendRequest.getKeyword(), pageable);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()

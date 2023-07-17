@@ -83,4 +83,32 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 
 		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
 	}
+
+	@Override
+	public Page<Member> findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(UUID memberId, String keyword, Pageable pageable) {
+		JPAQuery<Member> query = queryFactory.selectFrom(member)
+			.from(member)
+			.join(friend)
+			.on(member.memberId.eq(friend.friendId))
+			.where(friend.memberId.eq(memberId)) // 내 정보
+			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
+			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.orderBy(member.nickname.asc());
+
+		List<Member> memberList = query.fetch();
+
+		JPAQuery<Long> countQuery = queryFactory
+			.select(member.count())
+			.from(member)
+			.join(friend)
+			.on(member.memberId.eq(friend.memberId))
+			.where(member.memberId.eq(memberId)) // 내 정보
+			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
+			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded));
+
+		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);
+	}
+
 }

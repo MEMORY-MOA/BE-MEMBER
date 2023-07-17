@@ -17,4 +17,6 @@ public interface FriendQueryRepository {
 	Page<FriendsListDto.FriendInfo> findMemberByMemberIdAndFriendRequestStatus(UUID memberId,
 		FriendRequestStatus friendRequestStatus,
 		Pageable pageable);
+
+	Page<Member> findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(UUID memberId, String keyword, Pageable pageable);
 }

@@ -112,8 +112,8 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public FriendsListDto findMyFriends(String keyword, Pageable pageable) {
-		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
+	public FriendsListDto findMyFriends(UUID memberId, String keyword, Pageable pageable) {
+		Page<Member> members = friendQueryRepository.findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(memberId, keyword, pageable);
 
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalPages())

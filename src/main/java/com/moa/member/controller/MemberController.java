@@ -40,10 +40,12 @@ public class MemberController {
 	public ResponseEntity<ResponseDto<Object>> signUp(@RequestBody @Valid SignupRequest signupRequest) {
 
 		MemberDto memberDto = MemberMapper.instance.requestToDto(signupRequest);
-		memberService.signUp(memberDto);
+		MemberDto member = memberService.signUp(memberDto);
+
 		ResponseDto response = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("회원가입이 완료되었습니다.")
+			.data(member.getMemberId())
 			.build();
 
 		return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -89,7 +91,6 @@ public class MemberController {
 
 	@PostMapping("/send-email")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
-		System.out.println(request);
 		memberService.sendVerificationEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
