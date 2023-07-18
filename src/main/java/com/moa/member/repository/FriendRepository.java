@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.moa.member.entity.Friend;
+import com.moa.member.entity.FriendRequestStatus;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
 	Optional<Friend> findFriendByMemberIdAndFriendId(UUID memberId, UUID friendId);
 
-	Optional<Page<Friend>> findFriendsByMemberIdAndAndCompleted(UUID memberId, boolean completed, Pageable pageable);
+	Optional<Page<Friend>> findFriendsByMemberIdAndFriendRequestStatus(UUID memberId,
+		FriendRequestStatus friendRequestStatus, Pageable pageable);
 }
