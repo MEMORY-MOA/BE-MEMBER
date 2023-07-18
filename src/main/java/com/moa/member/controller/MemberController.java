@@ -98,7 +98,7 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
-	@GetMapping("/verify-code")
+	@PostMapping("/verify-code")
 	public ResponseEntity<ResponseDto<?>> checkEmailVerification(
 		@Valid @RequestBody VerificationRequest request) {
 		memberService.verifyEmail(request);

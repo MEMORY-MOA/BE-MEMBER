@@ -21,10 +21,10 @@ public class CustomMemberMapperImpl {
 		member.pw(existingMember.getPw());
 		member.phone(existingMember.getPhone());
 
-		if (myPageDto.getNickName() == null) {
+		if (myPageDto.getNickname() == null) {
 			member.nickname(existingMember.getNickname());
 		} else {
-			member.nickname(myPageDto.getNickName());
+			member.nickname(myPageDto.getNickname());
 		}
 		if (myPageDto.getEmail() == null) {
 			member.email(existingMember.getEmail());
