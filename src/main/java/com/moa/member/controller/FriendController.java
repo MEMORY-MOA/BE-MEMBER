@@ -116,7 +116,7 @@ public class FriendController {
 		);
 	}
 
-	@PostMapping
+	@PostMapping("/search")
 	@Operation(summary = "키워드와 비슷한 닉네임, 혹은 로그인 아이디를 가진 회원 찾기_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌. swagger사용시 searchFriendRequest와 pageable을 감싸는 json 괄호 지울것. 아니면 오류남.")
 	public ResponseEntity<ResponseDto> searchFriends(
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
@@ -133,7 +133,7 @@ public class FriendController {
 		);
 	}
 
-	@PostMapping("/my-friends")
+	@PostMapping("/my-friends/search")
 	public ResponseEntity<ResponseDto> searchMyFriends(@RequestHeader UUID memberId,
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
 		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
