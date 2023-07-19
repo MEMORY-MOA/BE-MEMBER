@@ -24,6 +24,8 @@ import com.moa.member.dto.MyPageDto;
 import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.service.MemberService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +34,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "회원 가입, 로그인 등 회원관리 기능")
 public class MemberController {
 
 	private final MemberService memberService;
 
 	@PostMapping("/signup")
+	@Operation(summary = "회원가입_Inyoung.R")
 	public ResponseEntity<ResponseDto<Object>> signUp(@RequestBody @Valid SignupRequest signupRequest) {
 
 		MemberDto memberDto = MemberMapper.instance.requestToDto(signupRequest);
@@ -52,6 +56,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/check-id")
+	@Operation(summary = "loginId 중복 체크 API_Inyoung.R")
 	public ResponseEntity<ResponseDto<Object>> checkId(
 		@RequestBody @Valid DuplicateCheckRequest duplicateCheckRequest) {
 
@@ -70,20 +75,21 @@ public class MemberController {
 		}
 	}
 
-	@PostMapping("/check-name")
-	public ResponseEntity<ResponseDto<Object>> checkName(
+	@PostMapping("/check-nickname")
+	@Operation(summary = "닉네임 중복 체크 API_Inyoung.R")
+	public ResponseEntity<ResponseDto<Object>> checkNickname(
 		@RequestBody @Valid DuplicateCheckRequest duplicateCheckRequest) {
 
 		if (memberService.duplicateCheckName(duplicateCheckRequest.getCheckSubject())) {
 			ResponseDto response = ResponseDto.builder()
 				.httpStatus(HttpStatus.NOT_ACCEPTABLE)
-				.msg("이미 사용 중인 이름입니다.")
+				.msg("이미 사용 중인 닉네임입니다.")
 				.build();
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
 		} else {
 			ResponseDto response = ResponseDto.builder()
 				.httpStatus(HttpStatus.OK)
-				.msg("사용 가능한 이름입니다.")
+				.msg("사용 가능한 닉네임입니다.")
 				.build();
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		}
@@ -135,6 +141,7 @@ public class MemberController {
 	}
 
 	@DeleteMapping
+	@Operation(summary = "회원탈퇴_Inyoung.R", description = "완벽히 탈퇴시키지는 않고 비활성화. 1년 후에 삭제 처리 하는 등 조치 필요할 듯.")
 	public ResponseEntity<ResponseDto> deleteMember(@RequestHeader("member") UUID memberId) {
 		memberService.delete(memberId);
 		ResponseDto<?> responseDto = ResponseDto.builder()
