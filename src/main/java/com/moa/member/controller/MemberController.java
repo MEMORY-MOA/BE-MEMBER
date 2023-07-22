@@ -96,6 +96,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/send-email")
+	@Operation(summary = "인증 코드 이메일로 발송하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
 		memberService.sendVerificationEmail(request);
 		ResponseDto<?> responseDto = ResponseDto.builder()
@@ -106,6 +107,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/verify-code")
+	@Operation(summary = "이메일 인증 코드 인증하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> checkEmailVerification(
 		@Valid @RequestBody VerificationRequest request) {
 		memberService.verifyEmail(request);
@@ -118,6 +120,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/my-page")
+	@Operation(summary = "마이페이지 조회하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> viewMyPage(@RequestHeader("member") UUID memberId) {
 		MyPageDto myPageDto = memberService.findMyPage(memberId);
 		ResponseDto<?> responseDto = ResponseDto.builder()
@@ -129,6 +132,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/my-page")
+	@Operation(summary = "마이페이지 수정하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> modifyMyPage(@RequestHeader("member") UUID memberId,
 		@RequestBody @Valid MyPageRequest myPageRequest) {
 		MyPageDto myPageDto = MemberMapper.instance.myPageRequestToMyPageDto(myPageRequest);
