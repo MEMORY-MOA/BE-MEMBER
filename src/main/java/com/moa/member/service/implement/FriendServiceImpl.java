@@ -95,7 +95,7 @@ public class FriendServiceImpl implements FriendService {
 			memberId, friendRequestStatus, pageable);
 
 		return FriendsListDto.builder()
-			.friendsCnt(members.getTotalPages())
+			.friendsCnt(members.getTotalElements())
 			.friendsPage(pageable.getPageNumber())
 			.friendsList(members.getContent())
 			.build();
@@ -106,7 +106,7 @@ public class FriendServiceImpl implements FriendService {
 		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
 
 		return FriendsListDto.builder()
-			.friendsCnt(members.getTotalPages())
+			.friendsCnt(members.getTotalElements())
 			.friendsPage(pageable.getPageNumber())
 			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members.getContent()))
 			.build();
@@ -117,7 +117,7 @@ public class FriendServiceImpl implements FriendService {
 		Page<Member> members = friendQueryRepository.findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(memberId, keyword, pageable);
 
 		return FriendsListDto.builder()
-			.friendsCnt(members.getTotalPages())
+			.friendsCnt(members.getTotalElements())
 			.friendsPage(pageable.getPageNumber())
 			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members.getContent()))
 			.build();

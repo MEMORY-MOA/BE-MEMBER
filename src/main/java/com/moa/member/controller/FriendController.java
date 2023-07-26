@@ -71,7 +71,7 @@ public class FriendController {
 	@GetMapping
 	@Operation(summary = "요청을 보내 수락까지 완료된 친구 리스트 전체 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
 	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
 
@@ -87,7 +87,7 @@ public class FriendController {
 	@GetMapping("/scent-requests/")
 	@Operation(summary = "내가 보낸 친구 요청 리스트 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
 	public ResponseEntity<ResponseDto> getScentFriendsRequests(@RequestHeader UUID memberId,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Scent);
 
@@ -103,7 +103,7 @@ public class FriendController {
 	@GetMapping("/received-requests/")
 	@Operation(summary = "내가 받은 친구 요청 리스트 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
 	public ResponseEntity<ResponseDto> getReceivedFriendsRequests(@RequestHeader UUID memberId,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Received);
 
@@ -120,7 +120,7 @@ public class FriendController {
 	@Operation(summary = "키워드와 비슷한 닉네임, 혹은 로그인 아이디를 가진 회원 찾기_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌. swagger사용시 searchFriendRequest와 pageable을 감싸는 json 괄호 지울것. 아니면 오류남.")
 	public ResponseEntity<ResponseDto> searchFriends(
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.findFriends(searchFriendRequest.getKeyword(), pageable);
 
@@ -137,7 +137,7 @@ public class FriendController {
 	@Operation(summary = "키워드와 비슷한 닉네임, 혹은 로그인 아이디를 가진 내 친구 중 검색하기 - timecapsule 내 친구 초대 시 사용_yejin", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌. swagger사용시 searchFriendRequest와 pageable을 감싸는 json 괄호 지울것. 아니면 오류남.")
 	public ResponseEntity<ResponseDto> searchMyFriends(@RequestHeader UUID memberId,
 		@RequestBody @Valid SearchFriendRequest searchFriendRequest,
-		@PageableDefault(size = 10, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		log.info(searchFriendRequest.getKeyword());
 		FriendsListDto friendsList = friendService.findMyFriends(memberId, searchFriendRequest.getKeyword(), pageable);

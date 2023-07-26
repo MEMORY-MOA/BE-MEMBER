@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FriendsListDto {
-	private int friendsCnt;
+	private long friendsCnt;
 	private int friendsPage;
 	private List<FriendInfo> friendsList;
 
