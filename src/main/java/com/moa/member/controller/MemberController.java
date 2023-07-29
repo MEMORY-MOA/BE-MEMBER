@@ -132,7 +132,7 @@ public class MemberController {
 	}
 
 	@PatchMapping("/my-page")
-	@Operation(summary = "마이페이지 수정하기_Ahin.K")
+	@Operation(summary = "마이페이지 수정하기_Ahin.K", description = "nickname, email, alarm 중에 수정하고 싶은 필드에만 값을 넣고 나머지는 null로 보내서 수정 가능")
 	public ResponseEntity<ResponseDto<?>> modifyMyPage(@RequestHeader("member") UUID memberId,
 		@RequestBody @Valid MyPageRequest myPageRequest) {
 		MyPageDto myPageDto = MemberMapper.instance.myPageRequestToMyPageDto(myPageRequest);
