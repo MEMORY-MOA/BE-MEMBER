@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.moa.member.controller.request.EmailRequest;
@@ -34,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
 	private final RedisUtil redisUtil;
 	private final JavaMailSender emailSender;
 	private final EmailUtil emailUtil;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public void sendVerificationEmail(EmailRequest request) {
@@ -95,9 +97,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDto signUp(MemberDto memberDto) {
+		memberDto.setPw(bCryptPasswordEncoder.encode(memberDto.getPw()));
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
 		Member result = memberRepository.save(member);
-		log.info("memberDto = {}", memberMapper.entityToDto(result));
 		return memberMapper.entityToDto(result);
 	}
 
