@@ -13,7 +13,7 @@ env:
   IMAGE_TAG: latest                
 
 jobs:
-  deploy:
+  build-and-push-image:
     name: Deploy
     runs-on: ubuntu-latest
 
