@@ -1,6 +1,5 @@
 spring:
   config:
-    import: env.yml
     data:
       redis:
         host: ${REDIS_HOST}
