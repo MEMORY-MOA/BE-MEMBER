@@ -37,8 +37,8 @@ public class MemberServiceImpl implements MemberService {
 	private final EmailUtil emailUtil;
 
 	@Override
-	public void sendVerificationEmail(EmailRequest request) {
-		String email = request.getEmail();
+	public void sendVerificationEmail(String email) {
+		if (memberRepository.existsMemberByEmail(email)) throw new ExistsException("이메일 중복입니다.");
 		String code = emailUtil.createCode();
 		MimeMessage message = emailUtil.createMessage(email, code);
 		try {
@@ -97,8 +97,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto signUp(MemberDto memberDto) {
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
-
-		if (memberRepository.existsMemberByEmail(memberDto.getEmail())) throw new ExistsException("이메일 중복입니다.");
 		Member result = memberRepository.save(member);
 		log.info("memberDto = {}", memberMapper.entityToDto(result));
 		return memberMapper.entityToDto(result);

@@ -98,7 +98,7 @@ public class MemberController {
 	@PostMapping("/send-email")
 	@Operation(summary = "인증 코드 이메일로 발송하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
-		memberService.sendVerificationEmail(request);
+		memberService.sendVerificationEmail(request.getEmail());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("인증 코드 관련 이메일이 보내졌습니다.")

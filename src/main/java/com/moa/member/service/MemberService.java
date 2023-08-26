@@ -15,7 +15,7 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendVerificationEmail(EmailRequest request);
+	void sendVerificationEmail(String email);
 
 	public MyPageDto findMyPage(UUID memberId);
 
