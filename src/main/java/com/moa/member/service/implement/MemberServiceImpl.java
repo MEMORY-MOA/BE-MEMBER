@@ -3,6 +3,7 @@ package com.moa.member.service.implement;
 import java.util.UUID;
 
 import com.moa.member.exception.ExistsException;
+import com.moa.member.exception.PasswordException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,11 @@ public class MemberServiceImpl implements MemberService {
 
 		member.delete();
 		memberRepository.save(member);
+	}
+
+	@Override
+	public void checkPassword(UUID memberId, String pw) {
+		if(!memberRepository.existsMemberByMemberIdAndPw(memberId, pw)) throw new PasswordException();
 	}
 
 	@Override

@@ -24,4 +24,6 @@ public interface MemberService {
 	void verifyEmail(VerificationRequest request);
 
     void delete(UUID memberId);
+
+	void checkPassword(UUID memberId, String pw);
 }
