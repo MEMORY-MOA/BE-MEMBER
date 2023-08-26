@@ -2,6 +2,7 @@ package com.moa.member.service.implement;
 
 import java.util.UUID;
 
+import com.moa.member.exception.ExistsException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -96,6 +97,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto signUp(MemberDto memberDto) {
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
+
+		if (memberRepository.existsMemberByEmail(memberDto.getEmail())) throw new ExistsException("이메일 중복입니다.");
 		Member result = memberRepository.save(member);
 		log.info("memberDto = {}", memberMapper.entityToDto(result));
 		return memberMapper.entityToDto(result);
