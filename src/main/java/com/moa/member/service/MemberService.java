@@ -26,4 +26,6 @@ public interface MemberService {
     void delete(UUID memberId);
 
 	void checkPassword(UUID memberId, String pw);
+
+	void changePassword(UUID memberId, String pw);
 }

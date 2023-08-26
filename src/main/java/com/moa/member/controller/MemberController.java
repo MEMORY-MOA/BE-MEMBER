@@ -120,14 +120,26 @@ public class MemberController {
 
 	}
 
-	@PostMapping("/check-password")
+	@PostMapping("/verify-password")
 	@Operation(summary = "비밀번호 일치 여부 확인_yejin")
-	public ResponseEntity<ResponseDto<?>> checkPassword(@RequestHeader("member") UUID memberId,
+	public ResponseEntity<ResponseDto<?>> verifyPassword(@RequestHeader("member") UUID memberId,
 														@RequestBody PasswordRequest request) {
 		memberService.checkPassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("비밀번호가 일치합니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@PatchMapping("/change-password")
+	@Operation(summary = "비밀번호 변경_yejin")
+	public ResponseEntity<ResponseDto<?>> changePassword(@RequestHeader("member") UUID memberId,
+														@RequestBody PasswordRequest request) {
+		memberService.changePassword(memberId, request.getPw());
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("비밀번호를 변경하였습니다.")
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

@@ -82,6 +82,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public void changePassword(UUID memberId, String pw) {
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+		member.updatePw(pw);
+
+		memberRepository.save(member);
+	}
+
+	@Override
 	public MyPageDto findMyPage(UUID memberId) {
 		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
