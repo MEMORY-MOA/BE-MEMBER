@@ -68,15 +68,6 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
 	}
 
-	@ExceptionHandler(PasswordException.class)
-	public ResponseEntity<ResponseDto<?>> handlePasswordException(PasswordException ex) {
-		ResponseDto<?> responseDto = ResponseDto.builder()
-			.httpStatus(HttpStatus.BAD_REQUEST)
-			.msg("비밀번호 불일치 오류")
-			.build();
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
-	}
-
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ResponseDto<?>> handleRuntimeException(RuntimeException ex) {
 		ResponseDto<?> responseDto = ResponseDto.builder()

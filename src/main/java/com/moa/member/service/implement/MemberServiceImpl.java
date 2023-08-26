@@ -3,7 +3,6 @@ package com.moa.member.service.implement;
 import java.util.UUID;
 
 import com.moa.member.exception.ExistsException;
-import com.moa.member.exception.PasswordException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void checkPassword(UUID memberId, String pw) {
-		if(!memberRepository.existsMemberByMemberIdAndPw(memberId, pw)) throw new PasswordException();
+		if(!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw)) throw new NotFoundException("비밀번호가 일치하지 않습니다.");
 	}
 
 	@Override

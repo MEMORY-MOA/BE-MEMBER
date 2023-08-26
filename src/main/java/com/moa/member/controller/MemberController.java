@@ -122,7 +122,8 @@ public class MemberController {
 
 	@PostMapping("/check-password")
 	@Operation(summary = "비밀번호 일치 여부 확인_yejin")
-	public ResponseEntity<ResponseDto<?>> checkPassword(@RequestHeader("member") UUID memberId, PasswordRequest request) {
+	public ResponseEntity<ResponseDto<?>> checkPassword(@RequestHeader("member") UUID memberId,
+														@RequestBody PasswordRequest request) {
 		memberService.checkPassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
