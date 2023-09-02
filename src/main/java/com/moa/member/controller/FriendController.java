@@ -89,7 +89,7 @@ public class FriendController {
 	public ResponseEntity<ResponseDto> getScentFriendsRequests(@RequestHeader UUID memberId,
 		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
-		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Scent);
+		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Sent);
 
 		return ResponseEntity.status(HttpStatus.OK).body(
 			ResponseDto.<FriendsListDto>builder()
