@@ -3,6 +3,11 @@ package com.moa.member.controller;
 import java.util.UUID;
 
 import com.moa.member.controller.request.PasswordRequest;
+import com.moa.member.controller.request.SearchFriendRequest;
+import com.moa.member.dto.FriendsListDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -123,7 +128,7 @@ public class MemberController {
 	@PostMapping("/verify-password")
 	@Operation(summary = "비밀번호 일치 여부 확인_yejin")
 	public ResponseEntity<ResponseDto<?>> verifyPassword(@RequestHeader("member") UUID memberId,
-														@RequestBody PasswordRequest request) {
+														 @RequestBody PasswordRequest request) {
 		memberService.checkPassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
@@ -135,7 +140,7 @@ public class MemberController {
 	@PatchMapping("/change-password")
 	@Operation(summary = "비밀번호 변경_yejin")
 	public ResponseEntity<ResponseDto<?>> changePassword(@RequestHeader("member") UUID memberId,
-														@RequestBody PasswordRequest request) {
+														 @RequestBody PasswordRequest request) {
 		memberService.changePassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
@@ -176,6 +181,19 @@ public class MemberController {
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("회원이 탈퇴하였습니다")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@PostMapping("/search")
+	@Operation(summary = "회원찾기_yejin")
+	public ResponseEntity<ResponseDto> searchMember(@RequestBody @Valid SearchFriendRequest searchFriendRequest,
+													@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
+		FriendsListDto friendsListDto = memberService.searchMember(searchFriendRequest.getKeyword(), pageable);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("회원 검색을 완료하였습니다")
+			.data(friendsListDto)
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

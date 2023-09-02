@@ -2,7 +2,12 @@ package com.moa.member.service.implement;
 
 import java.util.UUID;
 
+import com.moa.member.dto.FriendsListDto;
 import com.moa.member.exception.ExistsException;
+import com.moa.member.mapstruct.FriendMapper;
+import com.moa.member.repository.MemberQueryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final MemberQueryRepository memberQueryRepository;
 	private final MemberMapper memberMapper;
 
 	private final RedisUtil redisUtil;
@@ -126,4 +132,14 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.existsMemberByNicknameAndDeletedAtIsNull(name);
 	}
 
+	@Override
+	public FriendsListDto searchMember(String keyword, Pageable pageable) {
+		Page<Member> members = memberQueryRepository.findMemberByLoginIdOrNickname(keyword, pageable);
+
+		return FriendsListDto.builder()
+			.friendsCnt(members.getTotalElements())
+			.friendsPage(pageable.getPageNumber())
+			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members.getContent()))
+			.build();
+	}
 }
