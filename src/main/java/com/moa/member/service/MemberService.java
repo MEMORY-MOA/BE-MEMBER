@@ -30,6 +30,4 @@ public interface MemberService {
 	void checkPassword(UUID memberId, String pw);
 
 	void changePassword(UUID memberId, String pw);
-
-    FriendsListDto searchMember(String keyword, Pageable pageable);
 }

@@ -184,17 +184,4 @@ public class MemberController {
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
-
-	@PostMapping("/search")
-	@Operation(summary = "회원찾기_yejin")
-	public ResponseEntity<ResponseDto> searchMember(@RequestBody @Valid SearchFriendRequest searchFriendRequest,
-													@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
-		FriendsListDto friendsListDto = memberService.searchMember(searchFriendRequest.getKeyword(), pageable);
-		ResponseDto<?> responseDto = ResponseDto.builder()
-			.httpStatus(HttpStatus.OK)
-			.msg("회원 검색을 완료하였습니다")
-			.data(friendsListDto)
-			.build();
-		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-	}
 }
