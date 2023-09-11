@@ -2,6 +2,7 @@ package com.moa.member.service.implement;
 
 import java.util.UUID;
 
+import com.moa.member.exception.ExistsException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,8 @@ public class MemberServiceImpl implements MemberService {
 	private final EmailUtil emailUtil;
 
 	@Override
-	public void sendVerificationEmail(EmailRequest request) {
-		String email = request.getEmail();
+	public void sendVerificationEmail(String email) {
+		if (memberRepository.existsMemberByEmail(email)) throw new ExistsException("이메일 중복입니다.");
 		String code = emailUtil.createCode();
 		MimeMessage message = emailUtil.createMessage(email, code);
 		try {
@@ -72,6 +73,20 @@ public class MemberServiceImpl implements MemberService {
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		member.delete();
+		memberRepository.save(member);
+	}
+
+	@Override
+	public void checkPassword(UUID memberId, String pw) {
+		if(!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw)) throw new NotFoundException("비밀번호가 일치하지 않습니다.");
+	}
+
+	@Override
+	public void changePassword(UUID memberId, String pw) {
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+		member.updatePw(pw);
+
 		memberRepository.save(member);
 	}
 

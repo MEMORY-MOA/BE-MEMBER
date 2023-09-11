@@ -15,7 +15,7 @@ public interface MemberService {
 
 	boolean duplicateCheckName(String name);
 
-	void sendVerificationEmail(EmailRequest request);
+	void sendVerificationEmail(String email);
 
 	public MyPageDto findMyPage(UUID memberId);
 
@@ -24,4 +24,8 @@ public interface MemberService {
 	void verifyEmail(VerificationRequest request);
 
     void delete(UUID memberId);
+
+	void checkPassword(UUID memberId, String pw);
+
+	void changePassword(UUID memberId, String pw);
 }
