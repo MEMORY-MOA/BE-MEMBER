@@ -38,7 +38,7 @@ public class Friend {
 	}
 
 	public void sendFriendRequest() {
-		this.friendRequestStatus = FriendRequestStatus.Scent;
+		this.friendRequestStatus = FriendRequestStatus.Sent;
 	}
 
 	public void receiveFriendRequest() {

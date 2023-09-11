@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.VerificationRequest;
+import com.moa.member.dto.FriendsListDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
+import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
 

@@ -125,5 +125,4 @@ public class MemberServiceImpl implements MemberService {
 	public boolean duplicateCheckName(String name) {
 		return memberRepository.existsMemberByNicknameAndDeletedAtIsNull(name);
 	}
-
 }

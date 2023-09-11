@@ -103,12 +103,12 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public FriendsListDto findFriends(String keyword, Pageable pageable) {
-		Page<Member> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
+		Page<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
 
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalElements())
 			.friendsPage(pageable.getPageNumber())
-			.friendsList(FriendMapper.instance.memberEntityToFriendInfo(members.getContent()))
+			.friendsList(members.getContent())
 			.build();
 	}
 
