@@ -27,27 +27,32 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Member> findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(String keyword, Pageable pageable) {
-		JPAQuery<Member> query = queryFactory.selectFrom(member)
+	public Page<FriendsListDto.FriendInfo> findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(String keyword,
+		Pageable pageable) {
+		JPAQuery<FriendsListDto.FriendInfo> query = queryFactory
+			.select(Projections.bean(FriendsListDto.FriendInfo.class,
+				member.memberId,
+				member.loginId,
+				member.nickname,
+				friend.friendRequestStatus
+			))
 			.from(member)
-			.join(friend)
-			.on(member.memberId.eq(friend.memberId)) // 내 친구
+			.leftJoin(friend)
+			.on(member.memberId.eq(friend.memberId))
 			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
-			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded))
 			.where(member.deletedAt.isNull())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.orderBy(member.nickname.asc());
 
-		List<Member> memberList = query.fetch();
+		List<FriendsListDto.FriendInfo> memberList = query.fetch();
 
 		JPAQuery<Long> countQuery = queryFactory
 			.select(member.count())
 			.from(member)
-			.join(friend)
+			.leftJoin(friend)
 			.on(member.memberId.eq(friend.memberId))
 			.where(member.loginId.contains(keyword).or(member.nickname.contains(keyword)))
-			.where(friend.friendRequestStatus.eq(FriendRequestStatus.Concluded))
 			.where(member.deletedAt.isNull());
 
 		return PageableExecutionUtils.getPage(memberList, pageable, countQuery::fetchOne);

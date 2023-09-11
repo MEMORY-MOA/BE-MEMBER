@@ -44,4 +44,8 @@ public class Member extends BaseEntity {
 	public void delete() {
 		deletedAt = LocalDateTime.now();
 	}
+
+	public void updatePw(String pw) {
+		this.pw = pw;
+	}
 }
