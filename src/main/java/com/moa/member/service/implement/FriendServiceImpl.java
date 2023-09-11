@@ -1,7 +1,5 @@
 package com.moa.member.service.implement;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -103,7 +101,10 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public FriendsListDto findFriends(String keyword, Pageable pageable) {
-		Page<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(keyword, pageable);
+		Page<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(
+			keyword, pageable);
+
+		//System.out.println(keyword);
 
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalElements())
@@ -114,7 +115,8 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public FriendsListDto findMyFriends(UUID memberId, String keyword, Pageable pageable) {
-		Page<Member> members = friendQueryRepository.findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(memberId, keyword, pageable);
+		Page<Member> members = friendQueryRepository.findMemberByMemberIdAndFriendIdOrFriendNicknameAndFriendRequestStatus(
+			memberId, keyword, pageable);
 
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalElements())
