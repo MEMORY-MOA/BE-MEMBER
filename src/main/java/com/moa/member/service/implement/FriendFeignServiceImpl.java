@@ -22,9 +22,9 @@ public class FriendFeignServiceImpl implements FriendFeignService {
 	@Override
 	public void friendAccept(FriendDto friendDto) {
 
-		memberRepository.findMemberByMemberIdAndDeletedAtIsNull(friendDto.getMemberId())
+		memberRepository.findMemberByMemberIdAndDeletedAt(friendDto.getMemberId(), null)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
-		memberRepository.findMemberByMemberIdAndDeletedAtIsNull(friendDto.getFriendId())
+		memberRepository.findMemberByMemberIdAndDeletedAt(friendDto.getFriendId(), null)
 			.orElseThrow(() -> new NotFoundException("존재하지 않는 회원입니다."));
 
 		Friend friend = FriendMapper.instance.dtoToEntity(friendDto);

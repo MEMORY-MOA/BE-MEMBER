@@ -104,8 +104,6 @@ public class FriendServiceImpl implements FriendService {
 		Page<FriendsListDto.FriendInfo> members = friendQueryRepository.findMemberByFriendIdOrFriendNicknameAndFriendRequestStatus(
 			keyword, pageable);
 
-		//System.out.println(keyword);
-
 		return FriendsListDto.builder()
 			.friendsCnt(members.getTotalElements())
 			.friendsPage(pageable.getPageNumber())

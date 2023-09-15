@@ -1,5 +1,6 @@
 package com.moa.member.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,20 +14,18 @@ import com.moa.member.entity.Member;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, UUID> {
-	boolean existsMemberByLoginIdAndDeletedAtIsNull(String loginId);
+	boolean existsMemberByLoginIdAndDeletedAt(String loginId, LocalDateTime deletedAt);
 
-	boolean existsMemberByNicknameAndDeletedAtIsNull(String nickname);
+	boolean existsMemberByNicknameAndDeletedAt(String nickname, LocalDateTime deletedAt);
 
-	List<Member> findMemberByNicknameContainingAndDeletedAtIsNull(String nickname);
+	List<Member> findMemberByNicknameContainingAndDeletedAt(String nickname, LocalDateTime deletedAt);
 
-	Optional<Member> findMemberByMemberIdAndDeletedAtIsNull(UUID memberId);
-
-	Optional<Member> findMemberByMemberId(UUID memberId);
+	Optional<Member> findMemberByMemberIdAndDeletedAt(UUID memberId, LocalDateTime deletedAt);
 
 	Optional<Page<Member>> findMemberByLoginIdContainingOrNicknameContaining(String loginId, String nickname,
 		Pageable pageable);
 
 	boolean existsMemberByEmail(String email);
 
-	boolean existsMemberByMemberIdAndPwAndDeletedAtIsNull(UUID memberId, String password);
+	boolean existsMemberByMemberIdAndPwAndDeletedAt(UUID memberId, String password, LocalDateTime deletedAt);
 }

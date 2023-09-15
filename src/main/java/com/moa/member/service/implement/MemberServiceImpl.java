@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void delete(UUID memberId) {
-		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		member.delete();
@@ -78,12 +78,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void checkPassword(UUID memberId, String pw) {
-		if(!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw)) throw new NotFoundException("비밀번호가 일치하지 않습니다.");
+		if(!memberRepository.existsMemberByMemberIdAndPwAndDeletedAt(memberId, pw, null)) throw new NotFoundException("비밀번호가 일치하지 않습니다.");
 	}
 
 	@Override
 	public void changePassword(UUID memberId, String pw) {
-		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 		member.updatePw(pw);
 
@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MyPageDto findMyPage(UUID memberId) {
-		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		MyPageDto myPageDto = MemberMapper.instance.memberEntityToMypageDto(member);
@@ -101,7 +101,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void modifyMyPage(UUID memberId, MyPageDto myPageDto) {
-		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
 
 		member = MemberMapper.instance.updateMemberEntityFromMyPageDto(member, myPageDto);
@@ -118,11 +118,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean duplicateCheckLoginId(String loginId) {
-		return memberRepository.existsMemberByLoginIdAndDeletedAtIsNull(loginId);
+		return memberRepository.existsMemberByLoginIdAndDeletedAt(loginId, null);
 	}
 
 	@Override
 	public boolean duplicateCheckName(String name) {
-		return memberRepository.existsMemberByNicknameAndDeletedAtIsNull(name);
+		return memberRepository.existsMemberByNicknameAndDeletedAt(name, null);
 	}
 }

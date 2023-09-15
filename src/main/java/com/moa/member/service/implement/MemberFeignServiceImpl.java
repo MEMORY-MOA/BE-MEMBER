@@ -24,7 +24,7 @@ public class MemberFeignServiceImpl implements MemberFeignService {
 
 	@Override
 	public MemberDto get(UUID memberId) {
-		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 			.orElseThrow(() -> new NotFoundException("회원정보가 없습니다."));
 		return memberMapper.entityToDto(member);
 	}
@@ -34,7 +34,7 @@ public class MemberFeignServiceImpl implements MemberFeignService {
 		List<Member> members = new ArrayList<>();
 
 		for (UUID memberId : memberIdList) {
-			members.add(memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+			members.add(memberRepository.findMemberByMemberIdAndDeletedAt(memberId, null)
 				.orElseThrow(() -> new NotFoundException("회원정보가 없습니다.")));
 		}
 

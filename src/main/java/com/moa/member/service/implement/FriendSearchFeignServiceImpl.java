@@ -25,8 +25,8 @@ public class FriendSearchFeignServiceImpl implements FriendSearchFeignService {
 	@Override
 	public FriendIdListDto findFriendsIdByNickname(UUID memberId, String keyword) {
 		List<UUID> memberIdList = new ArrayList<>();
-		List<Member> memberList = memberRepository.findMemberByNicknameContainingAndDeletedAtIsNull(
-			keyword);
+		List<Member> memberList = memberRepository.findMemberByNicknameContainingAndDeletedAt(
+			keyword, null);
 		for (Member member : memberList) {
 			if (member != null) {
 				memberIdList.add(member.getMemberId());
