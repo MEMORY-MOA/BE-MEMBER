@@ -21,6 +21,7 @@ import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.controller.response.ResponseDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
+import com.moa.member.dto.ReissueTokenDto;
 import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.service.MemberService;
 
@@ -151,6 +152,21 @@ public class MemberController {
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("회원이 탈퇴하였습니다")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@GetMapping("/reissue")
+	@Operation(summary = "access token 재발급하기")
+	public ResponseEntity<ResponseDto<?>> reissueToken(
+		@RequestHeader("Authorization") String token) {
+		token = token.replace("Bearer ", "");
+		ReissueTokenDto reissueTokenDto = memberService.reissueAccessToken(token);
+
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("Access Token이 재발급 되었습니다.")
+			.data(reissueTokenDto)
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

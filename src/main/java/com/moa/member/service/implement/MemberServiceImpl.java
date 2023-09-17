@@ -1,9 +1,15 @@
 package com.moa.member.service.implement;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +17,7 @@ import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
+import com.moa.member.dto.ReissueTokenDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
 import com.moa.member.exception.NotFoundException;
@@ -20,6 +27,8 @@ import com.moa.member.service.MemberService;
 import com.moa.member.util.EmailUtil;
 import com.moa.member.util.RedisUtil;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +45,7 @@ public class MemberServiceImpl implements MemberService {
 	private final JavaMailSender emailSender;
 	private final EmailUtil emailUtil;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final Environment env;
 
 	@Override
 	public void sendVerificationEmail(EmailRequest request) {
@@ -113,4 +123,51 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.existsMemberByNicknameAndDeletedAtIsNull(name);
 	}
 
+	@Override
+	public UserDetails loadUserByUsername(String loginId) {
+		Member member = memberRepository.findByLoginId(loginId);
+
+		if (member == null) {
+			throw new UsernameNotFoundException(loginId);
+		}
+
+		return new User(member.getLoginId(), member.getPw()
+			, true, true, true, true
+			, new ArrayList<>());
+	}
+
+	@Override
+	public MemberDto getMemberDetailsByLoginId(String loginId) {
+		Member member = memberRepository.findByLoginId(loginId);
+
+		if (member == null) {
+			throw new UsernameNotFoundException(loginId);
+		}
+		MemberDto memberDto = memberMapper.entityToDto(member);
+
+		return memberDto;
+	}
+
+	@Override
+	public ReissueTokenDto reissueAccessToken(String jwt) {
+		String refreshToken = redisUtil.getData(jwt);
+		String accessToken;
+		if (refreshToken == null) {
+			throw new NotFoundException("유효하지 않은 refresh Token입니다.");
+		} else {
+			String memberId = Jwts.parser().setSigningKey(env.getProperty("refreshToken.secret"))
+				.parseClaimsJws(jwt).getBody()
+				.getSubject();
+
+			accessToken = Jwts.builder()
+				.setSubject(memberId)
+				.setExpiration(new Date(System.currentTimeMillis() +
+					Long.parseLong(env.getProperty("accessToken.expiration_time"))))
+				.signWith(SignatureAlgorithm.HS512, env.getProperty("accessToken.secret"))
+				.compact();
+		}
+		return ReissueTokenDto.builder()
+			.accessToken(accessToken)
+			.build();
+	}
 }
