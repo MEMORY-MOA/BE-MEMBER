@@ -2,6 +2,12 @@ package com.moa.member.controller;
 
 import java.util.UUID;
 
+import com.moa.member.controller.request.PasswordRequest;
+import com.moa.member.controller.request.SearchFriendRequest;
+import com.moa.member.dto.FriendsListDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -99,7 +105,7 @@ public class MemberController {
 	@PostMapping("/send-email")
 	@Operation(summary = "인증 코드 이메일로 발송하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerification(@Valid @RequestBody EmailRequest request) {
-		memberService.sendVerificationEmail(request);
+		memberService.sendVerificationEmail(request.getEmail());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("인증 코드 관련 이메일이 보내졌습니다.")
@@ -120,6 +126,30 @@ public class MemberController {
 
 	}
 
+	@PostMapping("/verify-password")
+	@Operation(summary = "비밀번호 일치 여부 확인_yejin")
+	public ResponseEntity<ResponseDto<?>> verifyPassword(@RequestHeader("member") UUID memberId,
+														 @RequestBody PasswordRequest request) {
+		memberService.checkPassword(memberId, request.getPw());
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("비밀번호가 일치합니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@PatchMapping("/change-password")
+	@Operation(summary = "비밀번호 변경_yejin")
+	public ResponseEntity<ResponseDto<?>> changePassword(@RequestHeader("member") UUID memberId,
+														 @RequestBody PasswordRequest request) {
+		memberService.changePassword(memberId, request.getPw());
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("비밀번호를 변경하였습니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
 	@GetMapping("/my-page")
 	@Operation(summary = "마이페이지 조회하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> viewMyPage(@RequestHeader("member") UUID memberId) {
@@ -135,7 +165,7 @@ public class MemberController {
 	@PatchMapping("/my-page")
 	@Operation(summary = "마이페이지 수정하기_Ahin.K", description = "nickname, email, alarm 중에 수정하고 싶은 필드에만 값을 넣고 나머지는 null로 보내서 수정 가능")
 	public ResponseEntity<ResponseDto<?>> modifyMyPage(@RequestHeader("member") UUID memberId,
-		@RequestBody @Valid MyPageRequest myPageRequest) {
+													   @RequestBody @Valid MyPageRequest myPageRequest) {
 		MyPageDto myPageDto = MemberMapper.instance.myPageRequestToMyPageDto(myPageRequest);
 		memberService.modifyMyPage(memberId, myPageDto);
 		ResponseDto<?> responseDto = ResponseDto.builder()

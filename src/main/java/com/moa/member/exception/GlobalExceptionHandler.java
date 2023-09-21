@@ -61,6 +61,15 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
 	}
 
+	@ExceptionHandler(ExistsException.class)
+	public ResponseEntity<ResponseDto<?>> handleExistsException(ExistsException ex) {
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.BAD_REQUEST)
+			.msg("중복 오류: " + ex.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+	}
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ResponseDto<?>> handleRuntimeException(RuntimeException ex) {
 		ResponseDto<?> responseDto = ResponseDto.builder()
