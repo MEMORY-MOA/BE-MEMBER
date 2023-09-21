@@ -1,5 +1,7 @@
 package com.moa.member.exception;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -70,6 +72,15 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ResponseDto<?>> handleRuntimeException(RuntimeException ex) {
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+			.msg("내부 서버 오류: " + ex.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ResponseDto<?>> handleAuthenticationException(AuthenticationException ex) {
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 			.msg("내부 서버 오류: " + ex.getMessage())

@@ -41,7 +41,7 @@ public class FriendController {
 
 	@PostMapping("/request")
 	@Operation(summary = "친구 요청 보내기_Inyoung.R")
-	public ResponseEntity<ResponseDto> friendRequest(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> friendRequest(@RequestHeader("member") UUID memberId,
 		@RequestBody @Valid FriendRequest friendRequest) {
 
 		friendService.friendRequest(FriendMapper.instance.requestToDto(memberId, friendRequest));
@@ -51,7 +51,7 @@ public class FriendController {
 
 	@PostMapping("/accept")
 	@Operation(summary = "친구 요청 수락하기_Inyoung.R")
-	public ResponseEntity<ResponseDto> friendAccept(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> friendAccept(@RequestHeader("member") UUID memberId,
 		@RequestBody @Valid FriendRequest friendRequest) {
 
 		friendService.friendAccept(FriendMapper.instance.requestToDto(memberId, friendRequest));
@@ -61,7 +61,7 @@ public class FriendController {
 
 	@DeleteMapping
 	@Operation(summary = "친구 요청 거절하기 및 친구 삭제_Inyoung.R", description = "양방향으로 친구 관계 말소")
-	public ResponseEntity<ResponseDto> friendDeny(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> friendDeny(@RequestHeader("member") UUID memberId,
 		@RequestBody @Valid FriendRequest friendRequest) {
 
 		friendService.friendDeny(FriendMapper.instance.requestToDto(memberId, friendRequest));
@@ -71,7 +71,7 @@ public class FriendController {
 
 	@GetMapping
 	@Operation(summary = "요청을 보내 수락까지 완료된 친구 리스트 전체 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
-	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> getFriendsList(@RequestHeader("member") UUID memberId,
 		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Concluded);
@@ -87,7 +87,7 @@ public class FriendController {
 
 	@GetMapping("/scent-requests/")
 	@Operation(summary = "내가 보낸 친구 요청 리스트 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
-	public ResponseEntity<ResponseDto> getScentFriendsRequests(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> getScentFriendsRequests(@RequestHeader("member") UUID memberId,
 		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Sent);
@@ -103,7 +103,7 @@ public class FriendController {
 
 	@GetMapping("/received-requests/")
 	@Operation(summary = "내가 받은 친구 요청 리스트 조회_Inyoung.R", description = "page만 보낼 경우 자동으로 size 10, 닉네임 순으로 정렬한 결과를 보내줌.")
-	public ResponseEntity<ResponseDto> getReceivedFriendsRequests(@RequestHeader UUID memberId,
+	public ResponseEntity<ResponseDto> getReceivedFriendsRequests(@RequestHeader("member") UUID memberId,
 		@PageableDefault(size = 1000, sort = "nickname", direction = Sort.Direction.ASC) Pageable pageable) {
 
 		FriendsListDto friendsList = friendService.getFriends(memberId, pageable, FriendRequestStatus.Received);

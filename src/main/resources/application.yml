@@ -52,3 +52,11 @@ spring:
     encoding: UTF-8
     check-template-location: true
     cache: false
+
+accessToken:
+  expiration_time: ${ACCESS_EXPIRATION_TIME}
+  secret: ${ACCESS_SECRET}
+
+refreshToken:
+  expiration_time: ${REFRESH_EXPIRATION_TIME}
+  secret: ${REFRESH_SECRET}
