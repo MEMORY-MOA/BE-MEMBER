@@ -1,5 +1,6 @@
 package com.moa.member.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.moa.member.controller.request.PasswordRequest;
@@ -198,6 +199,20 @@ public class MemberController {
 			.msg("Access Token이 재발급 되었습니다.")
 			.data(reissueTokenDto)
 			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
+	@GetMapping("/info")
+	@Operation(summary = "회원정보들 GET_yejin")
+	public ResponseEntity<ResponseDto> getMemberInfos() {
+		List<MemberDto> memberDto = memberService.getMemberInfos();
+
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.data(MemberMapper.instance.dtoToMemberInfosResponse(memberDto))
+			.msg("회원 정보를 조회하였습니다.")
+			.build();
+
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 }

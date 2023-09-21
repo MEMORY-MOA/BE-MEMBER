@@ -2,6 +2,7 @@ package com.moa.member.mapstruct;
 
 import java.util.List;
 
+import com.moa.member.controller.response.MemberInfosResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -32,6 +33,10 @@ public interface MemberMapper {
 	List<MemberDto> entityToDto(List<Member> members);
 
 	MyPageResponse myPageDtoToMyPageResponse(MyPageDto myPageDto);
+
+	MemberInfosResponse dtoToMemberInfosResponse(MemberDto memberDto);
+
+	List<MemberInfosResponse> dtoToMemberInfosResponse(List<MemberDto> memberDtos);
 
 	default Member updateMemberEntityFromMyPageDto(Member existingMember, MyPageDto myPageDto) {
 		CustomMemberMapperImpl customMapperImpl = new CustomMemberMapperImpl();

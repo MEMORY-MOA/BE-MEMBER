@@ -1,5 +1,6 @@
 package com.moa.member.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,4 +39,6 @@ public interface MemberService extends UserDetailsService {
 	void checkPassword(UUID memberId, String pw);
 
 	void changePassword(UUID memberId, String pw);
+
+    List<MemberDto> getMemberInfos();
 }
