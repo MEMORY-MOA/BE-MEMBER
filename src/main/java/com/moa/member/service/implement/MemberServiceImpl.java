@@ -2,6 +2,7 @@ package com.moa.member.service.implement;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.core.env.Environment;
@@ -100,6 +101,11 @@ public class MemberServiceImpl implements MemberService {
 		member.updatePw(pw);
 
 		memberRepository.save(member);
+	}
+
+	@Override
+	public List<MemberDto> getMemberInfos() {
+		return memberMapper.instance.entityToDto(memberRepository.findAll());
 	}
 
 	@Override
