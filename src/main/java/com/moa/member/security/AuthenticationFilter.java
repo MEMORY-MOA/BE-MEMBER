@@ -22,6 +22,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -77,9 +78,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			.compact();
 
 		redisUtil.setDataExpire(refreshToken, refreshToken, 60 * 60 * 24 * 14L);
-
+		Cookie cookie = new Cookie("refreshToken", refreshToken);
+		cookie.setHttpOnly(true);
+		cookie.setMaxAge(60 * 60 * 24 * 14);
 		response.addHeader("accessToken", accessToken);
-		response.addHeader("refreshToken", refreshToken);
+		response.addCookie(cookie);
 	}
 
 	@Override
