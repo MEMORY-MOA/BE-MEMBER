@@ -80,6 +80,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		redisUtil.setDataExpire(refreshToken, refreshToken, 60 * 60 * 24 * 14L);
 		Cookie cookie = new Cookie("refreshToken", refreshToken);
 		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
 		cookie.setMaxAge(60 * 60 * 24 * 14);
 		response.addHeader("accessToken", accessToken);
 		response.addCookie(cookie);
