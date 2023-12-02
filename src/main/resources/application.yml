@@ -1,8 +1,4 @@
-server:
-  port: 8082
 spring:
-  config:
-    import: env.yml
   data:
     redis:
       host: ${REDIS_HOST}
