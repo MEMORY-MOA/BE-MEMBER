@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -78,12 +78,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			.compact();
 
 		redisUtil.setDataExpire(refreshToken, refreshToken, 60 * 60 * 24 * 14L);
-		Cookie cookie = new Cookie("refreshToken", refreshToken);
-		cookie.setHttpOnly(true);
-		cookie.setSecure(true);
-		cookie.setMaxAge(60 * 60 * 24 * 14);
+
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+			.path("/")
+			.sameSite("None")
+			.httpOnly(false)
+			.secure(true)
+			.maxAge(60 * 60 * 24 * 14)
+			.build();
 		response.addHeader("accessToken", accessToken);
-		response.addCookie(cookie);
+		response.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	@Override
