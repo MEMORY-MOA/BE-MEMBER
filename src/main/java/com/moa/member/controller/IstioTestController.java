@@ -17,11 +17,11 @@ public class IstioTestController {
 		Thread.sleep(4000);
 
 		ResponseDto response = ResponseDto.builder()
-			.httpStatus(HttpStatus.OK)
+			.httpStatus(HttpStatus.GATEWAY_TIMEOUT)
 			.msg("Istio Test")
 			.data(null)
 			.build();
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body(response);
 	}
 
 }
