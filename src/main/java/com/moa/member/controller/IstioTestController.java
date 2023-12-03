@@ -12,8 +12,8 @@ import com.moa.member.controller.response.ResponseDto;
 @RequestMapping("/users")
 public class IstioTestController {
 
-	@GetMapping("/istio-test/ping-with-random-delay")
-	public ResponseEntity<ResponseDto<Object>> pingWithRandomDelay() throws InterruptedException {
+	@GetMapping("/istio-test/ping-with-random-delay/fail")
+	public ResponseEntity<ResponseDto<Object>> pingWithRandomDelayFail() throws InterruptedException {
 		Thread.sleep(4000);
 
 		ResponseDto response = ResponseDto.builder()
@@ -22,6 +22,18 @@ public class IstioTestController {
 			.data(null)
 			.build();
 		return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body(response);
+	}
+
+	@GetMapping("/istio-test/ping-with-random-delay/success")
+	public ResponseEntity<ResponseDto<Object>> pingWithRandomDelaySuccess() throws InterruptedException {
+		Thread.sleep(4000);
+
+		ResponseDto response = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("Istio Test")
+			.data(null)
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }
