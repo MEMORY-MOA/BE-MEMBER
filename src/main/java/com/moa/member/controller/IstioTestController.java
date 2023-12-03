@@ -1,7 +1,5 @@
 package com.moa.member.controller;
 
-import java.util.Random;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +14,7 @@ public class IstioTestController {
 
 	@GetMapping("/istio-test/ping-with-random-delay")
 	public ResponseEntity<ResponseDto<Object>> pingWithRandomDelay() throws InterruptedException {
-		int r = new Random().nextInt(2000, 4000);
-		Thread.sleep(r);
+		Thread.sleep(4000);
 
 		ResponseDto response = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
