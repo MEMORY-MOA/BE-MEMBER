@@ -34,6 +34,7 @@ public class FriendQueryRepositoryImpl implements FriendQueryRepository {
 				member.memberId,
 				member.loginId,
 				member.nickname,
+				member.memColor,
 				friend.friendRequestStatus
 			))
 			.from(member)

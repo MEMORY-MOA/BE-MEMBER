@@ -13,4 +13,6 @@ public class TimeCapsuleMemberDto {
 	private String loginId;
 
 	private String nickname;
+
+	private int memColor;
 }
