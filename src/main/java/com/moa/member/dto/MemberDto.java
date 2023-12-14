@@ -20,6 +20,7 @@ public class MemberDto extends BaseDto {
 	private String nickname;
 	private String email;
 	private String phone;
+	private int color;
 	private LocalDateTime deletedAt;
 
 }

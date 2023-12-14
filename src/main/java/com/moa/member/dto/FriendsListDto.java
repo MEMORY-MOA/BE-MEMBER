@@ -27,6 +27,7 @@ public class FriendsListDto {
 		private UUID memberId;
 		private String loginId;
 		private String nickname;
+		private int color;
 		private FriendRequestStatus friendRequestStatus;
 	}
 }

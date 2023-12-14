@@ -1,9 +1,6 @@
 package com.moa.member.service.implement;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.core.env.Environment;
 import com.moa.member.exception.ExistsException;
@@ -129,6 +126,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDto signUp(MemberDto memberDto) {
 		memberDto.setPw(bCryptPasswordEncoder.encode(memberDto.getPw()));
+
+		Random random = new Random();
+		memberDto.setColor(random.nextInt(10));
+
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
 		Member result = memberRepository.save(member);
 		return memberMapper.entityToDto(result);
