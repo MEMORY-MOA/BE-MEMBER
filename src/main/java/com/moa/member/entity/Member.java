@@ -41,6 +41,7 @@ public class Member extends BaseEntity {
 	private Boolean alarm;
 	@Column(nullable = true)
 	private LocalDateTime deletedAt;
+	private int memColor;
 
 	public void delete() {
 		deletedAt = LocalDateTime.now();
