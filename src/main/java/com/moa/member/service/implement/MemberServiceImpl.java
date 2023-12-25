@@ -128,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
 		memberDto.setPw(bCryptPasswordEncoder.encode(memberDto.getPw()));
 
 		Random random = new Random();
-		memberDto.setMemColor(random.nextInt(10));
+		memberDto.setMemColor(random.nextInt(7));
 
 		Member member = MemberMapper.instance.dtoToEntity(memberDto);
 		Member result = memberRepository.save(member);
