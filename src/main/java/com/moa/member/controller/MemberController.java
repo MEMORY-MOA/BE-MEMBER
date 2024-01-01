@@ -3,14 +3,9 @@ package com.moa.member.controller;
 import java.util.List;
 import java.util.UUID;
 
-import com.moa.member.controller.request.PasswordRequest;
-import com.moa.member.controller.request.SearchFriendRequest;
-import com.moa.member.dto.FriendsListDto;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.moa.member.controller.request.DuplicateCheckRequest;
 import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.MyPageRequest;
+import com.moa.member.controller.request.PasswordRequest;
 import com.moa.member.controller.request.SignupRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.controller.response.ResponseDto;
@@ -130,7 +126,7 @@ public class MemberController {
 	@PostMapping("/verify-password")
 	@Operation(summary = "비밀번호 일치 여부 확인_yejin")
 	public ResponseEntity<ResponseDto<?>> verifyPassword(@RequestHeader("member") UUID memberId,
-														 @RequestBody PasswordRequest request) {
+		@RequestBody PasswordRequest request) {
 		memberService.checkPassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
@@ -142,7 +138,7 @@ public class MemberController {
 	@PatchMapping("/change-password")
 	@Operation(summary = "비밀번호 변경_yejin")
 	public ResponseEntity<ResponseDto<?>> changePassword(@RequestHeader("member") UUID memberId,
-														 @RequestBody PasswordRequest request) {
+		@RequestBody PasswordRequest request) {
 		memberService.changePassword(memberId, request.getPw());
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
@@ -166,7 +162,7 @@ public class MemberController {
 	@PatchMapping("/my-page")
 	@Operation(summary = "마이페이지 수정하기_Ahin.K", description = "nickname, email, alarm 중에 수정하고 싶은 필드에만 값을 넣고 나머지는 null로 보내서 수정 가능")
 	public ResponseEntity<ResponseDto<?>> modifyMyPage(@RequestHeader("member") UUID memberId,
-													   @RequestBody @Valid MyPageRequest myPageRequest) {
+		@RequestBody @Valid MyPageRequest myPageRequest) {
 		MyPageDto myPageDto = MemberMapper.instance.myPageRequestToMyPageDto(myPageRequest);
 		memberService.modifyMyPage(memberId, myPageDto);
 		ResponseDto<?> responseDto = ResponseDto.builder()
@@ -190,7 +186,7 @@ public class MemberController {
 	@GetMapping("/reissue")
 	@Operation(summary = "access token 재발급하기")
 	public ResponseEntity<ResponseDto<?>> reissueToken(
-		@RequestHeader("Authorization") String token) {
+		@CookieValue(name = "refreshToken", required = false) String token) {
 		token = token.replace("Bearer ", "");
 		ReissueTokenDto reissueTokenDto = memberService.reissueAccessToken(token);
 
