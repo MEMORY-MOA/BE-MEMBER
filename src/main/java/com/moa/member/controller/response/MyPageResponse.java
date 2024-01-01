@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class MyPageResponse {
 
+	private String loginId;
 	private String nickname;
 	private String email;
 	private Boolean alarm;
