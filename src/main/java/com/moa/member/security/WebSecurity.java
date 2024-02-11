@@ -50,7 +50,7 @@ public class WebSecurity {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 			.authorizeHttpRequests()
-			.requestMatchers("/login").permitAll()
+			.requestMatchers("/**").permitAll()
 			.anyRequest().authenticated()
 			.and().logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
