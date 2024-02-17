@@ -158,6 +158,18 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
+	@PatchMapping("/change-password/id")
+	@Operation(summary = "해당 아이디를 가진 사용자의 비밀번호 변경_Ahin.K")
+	public ResponseEntity<ResponseDto<?>> changePasswordWithId(@RequestHeader("loginId") String id,
+		@RequestBody PasswordRequest request) {
+		memberService.changePasswordWithId(id, request.getPw());
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("비밀번호를 변경하였습니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
 	@GetMapping("/my-page")
 	@Operation(summary = "마이페이지 조회하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> viewMyPage(@RequestHeader("member") UUID memberId) {
