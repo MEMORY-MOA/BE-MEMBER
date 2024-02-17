@@ -5,14 +5,10 @@ import java.util.UUID;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.VerificationRequest;
-import com.moa.member.dto.FriendsListDto;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
-
 import com.moa.member.dto.ReissueTokenDto;
-import org.springframework.data.domain.Pageable;
 
 public interface MemberService extends UserDetailsService {
 
@@ -23,6 +19,8 @@ public interface MemberService extends UserDetailsService {
 	boolean duplicateCheckName(String name);
 
 	void sendVerificationEmail(String email);
+
+	void sendVerificationEmailWithId(String id);
 
 	public MyPageDto findMyPage(UUID memberId);
 
@@ -40,5 +38,5 @@ public interface MemberService extends UserDetailsService {
 
 	void changePassword(UUID memberId, String pw);
 
-    List<MemberDto> getMemberInfos();
+	List<MemberDto> getMemberInfos();
 }

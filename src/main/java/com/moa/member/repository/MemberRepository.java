@@ -27,7 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 		Pageable pageable);
 
 	Member findByLoginId(String loginId);
-  
+
 	boolean existsMemberByEmail(String email);
 
 	boolean existsMemberByMemberIdAndPwAndDeletedAtIsNull(UUID memberId, String password);
