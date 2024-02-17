@@ -21,6 +21,8 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
 	Optional<Member> findMemberByMemberIdAndDeletedAtIsNull(UUID memberId);
 
+	Optional<Member> findMemberByLoginIdAndDeletedAtIsNull(String loginId);
+
 	Optional<Member> findMemberByMemberId(UUID memberId);
 
 	Optional<Page<Member>> findMemberByLoginIdContainingOrNicknameContaining(String loginId, String nickname,

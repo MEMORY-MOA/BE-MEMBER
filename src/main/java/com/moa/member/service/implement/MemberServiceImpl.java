@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 		Member member = memberRepository.findByLoginId(id);
 		if (member == null)
 			throw new NotFoundException("유효하지 않은 아이디입니다.");
-		
+
 		String code = emailUtil.createCode();
 		String email = member.getEmail();
 		MimeMessage message = emailUtil.createMessage(email, code);
@@ -119,7 +119,16 @@ public class MemberServiceImpl implements MemberService {
 	public void changePassword(UUID memberId, String pw) {
 		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
 			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
-		member.updatePw(pw);
+		member.updatePw(bCryptPasswordEncoder.encode(pw));
+
+		memberRepository.save(member);
+	}
+
+	@Override
+	public void changePasswordWithId(String id, String pw) {
+		Member member = memberRepository.findMemberByLoginIdAndDeletedAtIsNull(id)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+		member.updatePw(bCryptPasswordEncoder.encode(pw));
 
 		memberRepository.save(member);
 	}

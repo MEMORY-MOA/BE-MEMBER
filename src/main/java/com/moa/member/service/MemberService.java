@@ -38,5 +38,7 @@ public interface MemberService extends UserDetailsService {
 
 	void changePassword(UUID memberId, String pw);
 
+	void changePasswordWithId(String id, String pw);
+
 	List<MemberDto> getMemberInfos();
 }
