@@ -110,6 +110,17 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}
 
+	@PostMapping("/send-email/id")
+	@Operation(summary = "아이디를 보내면 해당 아이디를 가진 사용자의 이메일로 인증 코드 이메일로 발송하기_Ahin.K")
+	public ResponseEntity<ResponseDto<?>> sendEmailVerificationWithId(@RequestHeader("loginId") String id) {
+		memberService.sendVerificationEmailWithId(id);
+		ResponseDto<?> responseDto = ResponseDto.builder()
+			.httpStatus(HttpStatus.OK)
+			.msg("해당 사용자의 이메일로 인증 코드 관련 이메일이 보내졌습니다.")
+			.build();
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
+
 	@PostMapping("/verify-code")
 	@Operation(summary = "이메일 인증 코드 인증하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> checkEmailVerification(

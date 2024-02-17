@@ -1,9 +1,12 @@
 package com.moa.member.service.implement;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.core.env.Environment;
-import com.moa.member.exception.ExistsException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
@@ -12,13 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.moa.member.controller.request.EmailRequest;
 import com.moa.member.controller.request.VerificationRequest;
 import com.moa.member.dto.MemberDto;
 import com.moa.member.dto.MyPageDto;
 import com.moa.member.dto.ReissueTokenDto;
 import com.moa.member.entity.Member;
 import com.moa.member.exception.EmailSendException;
+import com.moa.member.exception.ExistsException;
 import com.moa.member.exception.NotFoundException;
 import com.moa.member.mapstruct.MemberMapper;
 import com.moa.member.repository.MemberRepository;
@@ -48,8 +51,28 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void sendVerificationEmail(String email) {
-		if (memberRepository.existsMemberByEmail(email)) throw new ExistsException("이메일 중복입니다.");
+		if (memberRepository.existsMemberByEmail(email))
+			throw new ExistsException("이메일 중복입니다.");
 		String code = emailUtil.createCode();
+		MimeMessage message = emailUtil.createMessage(email, code);
+		try {
+			emailSender.send(message);
+		} catch (MailException es) {
+			es.printStackTrace();
+			throw new EmailSendException("이메일 전송에 실패했습니다.");
+		}
+
+		redisUtil.setDataExpire(email, code, 60 * 5L);
+	}
+
+	@Override
+	public void sendVerificationEmailWithId(String id) {
+		Member member = memberRepository.findByLoginId(id);
+		if (member == null)
+			throw new NotFoundException("유효하지 않은 아이디입니다.");
+		
+		String code = emailUtil.createCode();
+		String email = member.getEmail();
 		MimeMessage message = emailUtil.createMessage(email, code);
 		try {
 			emailSender.send(message);
@@ -88,7 +111,8 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void checkPassword(UUID memberId, String pw) {
-		if(!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw)) throw new NotFoundException("비밀번호가 일치하지 않습니다.");
+		if (!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw))
+			throw new NotFoundException("비밀번호가 일치하지 않습니다.");
 	}
 
 	@Override
