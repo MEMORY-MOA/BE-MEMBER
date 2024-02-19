@@ -111,7 +111,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void checkPassword(UUID memberId, String pw) {
-		if (!memberRepository.existsMemberByMemberIdAndPwAndDeletedAtIsNull(memberId, pw))
+		Member member = memberRepository.findMemberByMemberIdAndDeletedAtIsNull(memberId)
+			.orElseThrow(() -> new NotFoundException("해당 회원을 찾을 수 없습니다."));
+		if (!bCryptPasswordEncoder.matches(pw, member.getPw()))
 			throw new NotFoundException("비밀번호가 일치하지 않습니다.");
 	}
 
