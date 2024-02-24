@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import com.moa.member.dto.EmailDto;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -66,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void sendVerificationEmailWithId(String id) {
+	public EmailDto sendVerificationEmailWithId(String id) {
 		Member member = memberRepository.findByLoginId(id);
 		if (member == null)
 			throw new NotFoundException("유효하지 않은 아이디입니다.");
@@ -82,6 +83,10 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		redisUtil.setDataExpire(email, code, 60 * 5L);
+
+		return EmailDto.builder()
+			.email(email)
+			.build();
 	}
 
 	@Override
