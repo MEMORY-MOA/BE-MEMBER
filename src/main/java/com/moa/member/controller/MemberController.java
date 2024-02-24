@@ -3,6 +3,7 @@ package com.moa.member.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.moa.member.dto.EmailDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -113,10 +114,11 @@ public class MemberController {
 	@PostMapping("/send-email/id")
 	@Operation(summary = "아이디를 보내면 해당 아이디를 가진 사용자의 이메일로 인증 코드 이메일로 발송하기_Ahin.K")
 	public ResponseEntity<ResponseDto<?>> sendEmailVerificationWithId(@RequestHeader("loginId") String id) {
-		memberService.sendVerificationEmailWithId(id);
+		EmailDto emailDto = memberService.sendVerificationEmailWithId(id);
 		ResponseDto<?> responseDto = ResponseDto.builder()
 			.httpStatus(HttpStatus.OK)
 			.msg("해당 사용자의 이메일로 인증 코드 관련 이메일이 보내졌습니다.")
+			.data(MemberMapper.instance.EmailDtoToEmailResponse(emailDto))
 			.build();
 		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
 	}

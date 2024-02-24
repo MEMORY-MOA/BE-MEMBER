@@ -3,6 +3,7 @@ package com.moa.member.service;
 import java.util.List;
 import java.util.UUID;
 
+import com.moa.member.dto.EmailDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.moa.member.controller.request.VerificationRequest;
@@ -20,7 +21,7 @@ public interface MemberService extends UserDetailsService {
 
 	void sendVerificationEmail(String email);
 
-	void sendVerificationEmailWithId(String id);
+	EmailDto sendVerificationEmailWithId(String id);
 
 	public MyPageDto findMyPage(UUID memberId);
 
