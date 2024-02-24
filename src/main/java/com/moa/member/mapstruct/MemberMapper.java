@@ -2,7 +2,9 @@ package com.moa.member.mapstruct;
 
 import java.util.List;
 
+import com.moa.member.controller.response.EmailResponse;
 import com.moa.member.controller.response.MemberInfosResponse;
+import com.moa.member.dto.EmailDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -42,4 +44,6 @@ public interface MemberMapper {
 		CustomMemberMapperImpl customMapperImpl = new CustomMemberMapperImpl();
 		return customMapperImpl.updateMemberEntityFromMyPageDto(existingMember, myPageDto);
 	}
+
+	EmailResponse EmailDtoToEmailResponse(EmailDto emailDto);
 }
